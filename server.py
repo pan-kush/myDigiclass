@@ -387,5 +387,5 @@ def logout():
     return redirect('/')
 
 # app.run(threaded=True, port=5000)
-
-socketio.run(app)
+if __name__ == "__main__":
+	socketio.run(app)
