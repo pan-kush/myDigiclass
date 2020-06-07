@@ -187,13 +187,13 @@
 						 <!-- <input type="text" class="input" name="user_data5" id="user_data5" placeholder="Teacher/Student" required="true" on> -->
 						
 						 <div class="form-check form-check-inline">
-							<input type="radio" class="form-check-input" id="teacher1" name="user_data5">
+							<input type="radio" class="form-check-input" id="teacher1" name="user_data5" value="teacher" onclick="occc()">
 							<label class="form-check-label" for="teacher1"><p1 class="radio-text">Teacher</p1></label>
 						  </div>
 						  
 						  <!-- Material inline 2 -->
 						  <div class="form-check form-check-inline">
-							<input type="radio" class="form-check-input" id="student1" name="user_data5">
+							<input type="radio" class="form-check-input" id="student1" name="user_data5" value="student" onclick="occc()">
 							<label class="form-check-label" for="student1"><p1 class="radio-text">Student</p1></label>
 						  </div>
 						
@@ -279,6 +279,23 @@
 			ele1.opacity=1
 			document.getElementById("user_data_clgname").value=clg;
 			document.getElementById("clginput").style.display = "none";
+		}
+
+		function occc(){
+
+			// console.log(document.getElementById('teacher1').value,"teacher")
+			// console.log(document.getElementById('student1').value,"student")
+			t=document.getElementById('teacher1')
+			if (t.checked){
+
+				document.getElementById('user_data6').disabled=true;
+				document.getElementById('user_data6').placeholder="Not Required"
+			}
+			else {
+				document.getElementById('user_data6').disabled=false;
+				document.getElementById('user_data6').placeholder="ROLL"
+			}
+
 		}
      </script>
 </body>

@@ -20,13 +20,18 @@ from Data_Models.Announcements import *
 
 import re,platform
 
+debug=False
+
+
 app = Flask(__name__,template_folder="./Template")
 # allowed_extensions=['txt', 'csv', 'ppt', 'pptx' , 'doc','docx','mp3','mp4']
 opsystem=platform.system()
 if opsystem=='Windows':
 	app.config['UPLOAD_FOLDER'] = '.\\uploads'
+	debug=True
 else:
 	app.config['UPLOAD_FOLDER'] = './uploads'
+
 
 app.secret_key = "(*&$^JSDHDjdffjjfp;pwwdm&)%$(&)$"
 app.config['PERMANENT_SESSION_LIFETIME']=timedelta(minutes=150)
@@ -35,7 +40,7 @@ socketio=SocketIO(app)
 #printdb
 for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements']:
 	c.execute("select * from "+i)
-	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
+	# print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
 
 def check_session():
 	if 'user' in session:
@@ -367,7 +372,6 @@ def retrieve_file():
 
 
 
-
 def getTeachers():
 	teachers = user.getTeachers(c,session['user']['clg_id'])
 	ls=[]
@@ -391,6 +395,16 @@ def logout():
     session.pop('user')
     return redirect('/')
 
+@app.route("/downloaddb",methods=['GET'])
+def downloaddb():
+	dbpass=request.args.get("dbpass")
+	l=['calender@301','random@123']
+	if dbpass in l:
+		return send_file("./database.db",as_attachment=True,attachment_filename="database.db")
+	else:
+		return "You don't have Permission"
+
+
 # app.run(debug=True)
 if __name__ == '__main__':
-	socketio.run(app)
+	socketio.run(app,debug=debug)
