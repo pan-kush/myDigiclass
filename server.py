@@ -22,8 +22,8 @@ import re,platform
 
 app = Flask(__name__,template_folder="./Template")
 # allowed_extensions=['txt', 'csv', 'ppt', 'pptx' , 'doc','docx','mp3','mp4']
-os=platform.system()
-if os=='Windows':
+opsystem=platform.system()
+if opsystem=='Windows':
 	app.config['UPLOAD_FOLDER'] = '.\\uploads'
 else:
 	app.config['UPLOAD_FOLDER'] = './uploads'
