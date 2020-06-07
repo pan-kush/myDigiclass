@@ -22,7 +22,7 @@ import re
 
 app = Flask(__name__)
 # allowed_extensions=['txt', 'csv', 'ppt', 'pptx' , 'doc','docx','mp3','mp4']
-app.config['UPLOAD_FOLDER'] = '.\\uploads'
+app.config['UPLOAD_FOLDER'] = './uploads'
 app.secret_key = "(*&$^JSDHDjdffjjfp;pwwdm&)%$(&)$"
 app.config['PERMANENT_SESSION_LIFETIME']=timedelta(minutes=150)
 socketio=SocketIO(app)
