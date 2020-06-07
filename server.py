@@ -28,9 +28,9 @@ app.config['PERMANENT_SESSION_LIFETIME']=timedelta(minutes=150)
 socketio=SocketIO(app)
 
 #printdb
-for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements']:
-	c.execute("select * from "+i)
-	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
+# for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements']:
+# 	c.execute("select * from "+i)
+# 	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
 
 def check_session():
 	if 'user' in session:
