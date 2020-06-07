@@ -386,6 +386,6 @@ def logout():
     session.pop('user')
     return redirect('/')
 
-# app.run(debug=True)
+app.run()
 
-socketio.run(app)
+# socketio.run(app)
