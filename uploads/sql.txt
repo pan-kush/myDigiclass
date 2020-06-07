@@ -1,0 +1,29 @@
+import sqlite3
+
+conn = sqlite3.connect("database.db")
+
+c=conn.cursor()
+
+c.execute("Some SQL code")
+
+t = "Desire"
+
+c.execute("SOME CODE where col = ?",t)
+
+print(c.fetchone()) // fetchall = list of all outcomes
+
+codes = [(   ),(   ),(   )]
+
+c.executemany('insert into stocks  values (?,?,?,...)',codes)
+999
+
+for row in c.execute("SOME CODE"):
+	print(ROW)
+output:-
+('2006-01-05', 'BUY', 'RHAT', 100, 35.14)
+.
+.
+.
+
+conn.commit()
+conn.rollback()
