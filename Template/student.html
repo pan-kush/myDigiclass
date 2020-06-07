@@ -80,7 +80,21 @@
   		background-image: url('/static/img/bg6.webp');
   		background-repeat: no-repeat;
   		background-attachment: fixed;
-  		background-size: 100% 100%;}
+		  background-size: 100% 100%;}
+		  @media screen and (max-width: 950px){
+	.col-4{
+		display: none;
+	}
+	
+	.col-8{
+		margin-left: auto;
+		margin-right: auto;
+
+	}
+	.totalCount{
+		display: none;
+	}
+}
 	
 	</style>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -135,11 +149,10 @@
         				<a class="test dropdown-item" tabindex="-1" href="#">{{ t.name }}<span class="caret"></span></a>
         					<ul class="dropdown-menu">
 							{% for cls in t.classes %}
-
 								<!-- <a  tabindex="-1" href="#"></a> -->
 								<li>
 								<form action="/add_class" method="post">
-									<input type="hidden" type="text" name="cls_code" id="cls_code" onkeyup="check_classavail()" value="{{ cls.cls_id }}">
+									<input type="hidden" type="text" name="cls_code"  onkeyup="check_classavail()" value="{{ cls.cls_id }}">
 									<input type="submit" name="" class="dropdown-item" value="{{ cls.cls_id }}">
 								</form>
 								</li>
@@ -227,7 +240,7 @@
 		<div class="card-body">
 		  <h5 class="card-title">
 			<font size="9px">
-				<a href="#">{{ class.cls_id }}</a><span style="float: right;"><font size="4px">Total Students : </font>{{ class.participants }}</span>
+				<a href="#">{{ class.cls_id }}</a><span class="totalCount" style="float: right;"><font size="4px">Total Students : </font>{{ class.participants }}</span>
 				<br>
 			</font>
 		  </h5>
@@ -300,11 +313,11 @@
 
 	function check_classavail(){
 
-
-		console.log("hidde")
+			console.log(listofclasses)
 
           g=document.getElementById('cls_code')
           out=document.getElementById('print')
+          console.log(g.value)
           if (listofclasses.includes(g.value)) {
           	out.innerHTML='Available'
           }

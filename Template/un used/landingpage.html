@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login </title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<!-- <script type="text/javascript" src="/static/js/landing_page.js"></script> -->
+
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: large;">
+		<a class="navbar-brand" href="#" style="font-size:x-large;">WELCOME TO DIGITAL CLASSES</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav" style="font-size: larger;">
+		  <ul class="navbar-nav mr-auto">
+			<li class="nav-item ">
+			  <a class="nav-link" href="#">Home </a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#">Features</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#">Pricing</a>
+			</li>
+			
+          </ul>
+          <ul class="navbar-nav " style="margin-right: 100px;">
+            <li class="nav-item">
+                <a class="nav-link" href="/"> Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/clg_reg">Register</a>
+            </li>
+        </ul>
+		</div>
+      </nav>
+	<img class="wave" src="/static/img/wave.png">
+	<div class="container">
+		<div class="img">
+			<!-- <img src="img/bg_img.jpg"> -->
+		</div>
+		<div class="login-content">
+			<form action="/loginrequest" method="post" id="sub">
+				<img src="/static/img/avatar.svg">
+				<h2 class="title">Welcome</h2>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<!-- <h5>College ID</h5> -->
+           		   		<input type="text" name="Collge_id" placeholder="Enter Your College Id" id="clg_id" class="input" required="true">
+           		   </div>
+           		</div>
+           		<div class="input-div pass">
+           		   <div class="i"> 
+           		    	<i class="fas fa-lock"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<!-- <h5>Password</h5> -->
+           		    	<input type="password" name="collge_password" placeholder="Enter Your Password" id="clg_pass" class="input" required="true">
+            	   </div>
+            	</div>
+            	<a href="#">Forgot Password?</a>
+				<input type="submit" class="btn" value="Login" onclick="sendclg_id()">
+				<a href="/clg_reg">create new account</a>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="text/javascript">	
+	 document.getElementById("sub").addEventListener("click", function(event)
+  {
+  event.preventDefault()
+  // sendclg_id()
+  }); 
+
+ console.log(window.location.href)
+
+  function sendclg_id() {
+    e=document.getElementById('clg_id');
+    f=document.getElementById('clg_pass');
+    data= new FormData()
+    data.append('username',e.value)
+    data.append('password',f.value)
+    console.log(e.value,f.value)
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+
+          console.log(this.responseText);
+          if (this.response=='Invalid Credentials')
+          {
+            g=document.getElementsByClassName('a')
+            for (var i =g.length - 1; i >= 0; i--) {
+             
+                  g[i].value=""
+                  g[i].placeholder="Wrong Info"
+                  g[i].style.borderColor="red"
+                  console.log(console.dir(g[i].style))
+
+            }
+
+          }
+          else
+          {
+            window.open(this.response+"?"+'clg_id='+e.value,'_top')
+          }
+      }
+    };
+     xhttp.open("POST","/loginrequest",true)
+    console.log("username="+e.value+"&password="+f.value)
+    // xhttp.send("username="+e.value+"&password="+f.value)
+    xhttp.send(data)
+
+  }
+    
+  function check_avl(f) {
+
+      e=document.getElementById('clg_data2')
+      data= new FormData()
+      data.append('Colg_id',e.value)
+      // data.append('password',f.value)
+      console.log(e.value)
+      var xhttp = new XMLHttpRequest();
+
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+            console.log(this.responseText);
+            g=document.getElementById('print')
+            g.innerHTML=this.responseText
+        }
+      };
+
+      xhttp.open("POST","/check_avl",true)
+      console.log(""+e.value)
+      // xhttp.send("username="+e.value+"&password="+f.value)
+      xhttp.send(data)
+
+
+  }
+
+  function create_id() {
+
+
+      f=document.getElementById('print')
+      if(f.innerHTML=='In_use'){
+        f.style.color='red'
+        return
+      }
+      data= new FormData()
+      for(i=1;i<=3;i++){
+        e=document.getElementById('clg_data'+i)
+        data.append('clg_data'+i,e.value)
+        console.log('clg_data'+i,e.value)
+      }
+      // data.append('password',f.value)
+      console.log(data)
+      var xhttp = new XMLHttpRequest();
+
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+            console.log(this.responseText);
+            g=document.getElementById('print1')
+            g.innerHTML=this.responseText
+
+            f.innerHTML=""
+            for(i=1;i<=3;i++){
+              document.getElementById('clg_data'+i).value=""
+            }
+
+        }
+      };
+
+      xhttp.open("POST","/create_id",true)
+      // console.log(""e.value)
+      // xhttp.send("username="+e.value+"&password="+f.value)
+      xhttp.send(data)
+}
+  
+</script>
+</body>
+
+</html>

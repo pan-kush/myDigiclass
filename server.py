@@ -18,19 +18,24 @@ from Data_Models.Assignment import *
 from Data_Models.Chat import *
 from Data_Models.Announcements import *
 
-import re
+import re,platform
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder="./Template")
 # allowed_extensions=['txt', 'csv', 'ppt', 'pptx' , 'doc','docx','mp3','mp4']
-app.config['UPLOAD_FOLDER'] = './uploads'
+os=platform.system()
+if os=='Windows':
+	app.config['UPLOAD_FOLDER'] = '.\\uploads'
+else:
+	app.config['UPLOAD_FOLDER'] = './uploads'
+
 app.secret_key = "(*&$^JSDHDjdffjjfp;pwwdm&)%$(&)$"
 app.config['PERMANENT_SESSION_LIFETIME']=timedelta(minutes=150)
 socketio=SocketIO(app)
 
 #printdb
-# for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements']:
-# 	c.execute("select * from "+i)
-# 	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
+for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements']:
+	c.execute("select * from "+i)
+	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
 
 def check_session():
 	if 'user' in session:
@@ -39,13 +44,13 @@ def check_session():
 	
 
 
-@app.route('/',methods=['GET'])
+@app.route('/')
 def home():
     if 'user' in session:
         return redirect('/Class')
     return redirect(url_for('login'))
 
-@app.route('/login',methods=['GET'])
+@app.route('/login')
 def login():
     # print(session)
     if 'user' in session:
@@ -301,7 +306,7 @@ def on_join(data):
 
 @socketio.on('send')
 def send(file,data):
-	# print("\n\nXXXXrecei: ",str(data),str(file),sep="_")
+	print("\n\nXXXXrecei: ",str(data),str(file),sep="_")
 	time = ":".join(str(datetime.now()).split(':')[:-1])
 	usr = session['user']['user_id']
 	occ = session['user']['occ']
@@ -310,7 +315,7 @@ def send(file,data):
 	new_chat = chat(clg_cls_id,usr,chat_id,time,data,file)
 	img = True if file.split('.')[-1] in ['jpg','png','jpeg'] else False
 	new_chat.add(c)
-	conn.commit() 
+	conn.commit()
 	reply={'cls_id':clg_cls_id,'user_id':usr,'chat_id':chat_id,
 			'time':time,'text':data,'file':file,'occ':occ,'img':img,'name':session['user']['name']}
 	emit("reply",reply,room=session['room'])
@@ -386,6 +391,6 @@ def logout():
     session.pop('user')
     return redirect('/')
 
-# app.run(threaded=True, port=5000)
-if __name__ == "__main__":
+# app.run(debug=True)
+if __name__ == '__main__':
 	socketio.run(app)

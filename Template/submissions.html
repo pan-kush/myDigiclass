@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+	<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<title>Logs-ass.ass_name</title>
+	<style>
+		body {
+  		background-image: url('/static/img/bg6.webp');
+  		background-repeat: no-repeat;
+  		background-attachment: fixed;
+  		background-size: 100% 100%;}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top" style="font-size: large;">
+		<a class="navbar-brand" href="#" style="font-size:x-large;">WELCOME TO DIGITAL CLASSES</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav" style="font-size: larger;">
+		  <ul class="navbar-nav mr-auto">
+			<li class="nav-item ">
+			  <a class="nav-link" href="#">Home </a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#">Features</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#">Pricing</a>
+			</li>
+			
+		  </ul>
+		  <font color="white">{{ teacher }}</font>
+		  <ul class="navbar-nav " style="margin-right: 100px;">
+			<li class="nav-item">
+				<a class="nav-link" href="/logout"> Logout</a>
+			</li>
+		   
+		</ul>
+		</div>
+	  </nav>
+<div class="assinmentDetails" style="padding: 3em;">
+
+ 
+ <div class="card text-center">
+	<div class="card-header">
+		Assignment 
+	</div>
+	<div class="card-body">
+	  <h5 class="card-title">Name : {{ ass.ass_name}}</h5>
+	  <h5 class="card-title">ID : {{ ass.ass_id}}</h5>
+	  <p class="card-text">Here You have to provide all the Assignment details in brief</p>
+	  <a href="#" class="btn btn-primary">View All Assignments</a>
+	</div>
+	<div class="card-footer text-muted">
+		deadline: {{ ass.deadline }}
+	</div>
+  </div>
+</div>
+ <!--<br><br><br>
+{% for s in submissions %}
+
+    Name: {{ s.name }} , Roll: {{ s.roll }} , Status: {{ s.status }}
+    {% if occ=='teacher' %}
+    <a href="/retrieve_file?file_name={{ s.file }}">{{ s.file }}</a>
+    	<form action="/deluserAss" method="post">
+    		<input type="hidden" name="ass_id" value="{{ ass.ass_id }}">
+    		<input type="hidden" name="user_id" value="{{ s.user_id }}">
+    		<input type="submit" name="" value="Delete">
+    	</form>
+    {% endif %}
+<br>
+{% endfor %}  -->
+<div class="ass_log" style="padding: 1em;margin: 1em; padding-top: 0em;">
+<table class="table table-striped table-dark">
+	<thead>
+	  <tr>
+		<th scope="col">#</th>
+		<th scope="col">Name</th>
+		<th scope="col">ROll NUMBER</th>
+		<th scope="col">STATUS</th>
+		<th scope="col">DOWNLOAD</th>
+		<th scope="col">DELETE</th>
+	  </tr>
+	</thead>
+	<tbody>
+		{% for s in submissions %}
+	  <tr>
+		<th scope="row">#</th>
+		<td> {{ s.name }}</td>
+		<td>{{ s.roll }}</td>
+		<td>{{ s.status }}</td>
+	
+		<td>{% if occ=='teacher' %}
+			<a href="/retrieve_file?file_name={{ s.file }}">{{ s.file }}</a>
+			{% endif %}
+		</td>
+		<td>
+			{% if occ=='teacher' %}
+			<form action="/deluserAss" method="post">
+				<input type="hidden" name="ass_id" value="{{ ass.ass_id }}">
+				<input type="hidden" name="user_id" value="{{ s.user_id }}">
+				<input type="submit" name="" value="Delete">
+			</form>
+			{% endif %}
+		</td>
+		{% endfor %} 
+	  
+	</tbody>
+  </table>
+  </div>
+  
+{% if occ=='teacher' %}
+<a class="btn btn-success" style="margin-left: 45%;" href="/retrieve_file?file_name={{ ass.ass_id }}.xlsx">Download The Data</a>
+<h2></h2>
+{% endif %}
+</body>
+</html>
