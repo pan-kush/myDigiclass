@@ -20,5 +20,5 @@ pytz==2020.1
 redis==3.5.2
 six==1.15.0
 Werkzeug==1.0.1
-gunicorn
+gunicorn=20.0.4
 psycopg2

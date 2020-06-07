@@ -39,13 +39,13 @@ def check_session():
 	
 
 
-@app.route('/')
+@app.route('/',methods=['GET'])
 def home():
     if 'user' in session:
         return redirect('/Class')
     return redirect(url_for('login'))
 
-@app.route('/login')
+@app.route('/login',methods=['GET'])
 def login():
     # print(session)
     if 'user' in session:
