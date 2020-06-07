@@ -388,4 +388,4 @@ def logout():
 
 # app.run(debug=True)
 
-socketio.run(app,debug=True)
+socketio.run(app)
