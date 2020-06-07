@@ -20,7 +20,7 @@ from Data_Models.Announcements import *
 
 import re
 
-app = Flask(__name__,template_folder="./template")
+app = Flask(__name__)
 # allowed_extensions=['txt', 'csv', 'ppt', 'pptx' , 'doc','docx','mp3','mp4']
 app.config['UPLOAD_FOLDER'] = '.\\uploads'
 app.secret_key = "(*&$^JSDHDjdffjjfp;pwwdm&)%$(&)$"
