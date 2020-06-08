@@ -1,5 +1,8 @@
 from datetime import datetime
+import os,platform
 import pandas as pd
+
+
 class assignment:
 	def __init__(self,ass_id="",cls_id="",ass_name="",deadline="",desc="",files=""):
 		self.ass_id=ass_id
@@ -80,6 +83,7 @@ class assignment:
 		
 		ls=sorted(ls,key=lambda x: x['roll'])
 
+		opsystem=platform.system()
 		if dload:
 			d={'Name':[],'Roll':[],'Time':[],'Status':[]}
 			for i in d:
@@ -87,7 +91,11 @@ class assignment:
 					d[i].append(str(j[i.lower()]))
 		
 			df=pd.DataFrame(d)
-			df.to_excel('.\\uploads\\{}.xlsx'.format(ass_id),index=False)
+			if opsystem=='Windows':
+				df.to_excel('.\\uploads\\{}.xlsx'.format(ass_id),index=False)
+			else:
+				df.to_excel('./uploads/{}.xlsx'.format(ass_id),index=False)
+
 
 		print(ls)
 		return ls
