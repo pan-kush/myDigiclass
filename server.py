@@ -8,7 +8,7 @@ from datetime import timedelta,datetime
 
 # from Data_Models.connect_db import *
 import sqlite3
-conn = sqlite3.connect("database.db",check_same_thread=False)
+conn = sqlite3.connect("database.db",check_same_thread=False,timeout=30000)
 c=conn.cursor()
 
 from Data_Models.College import *
@@ -86,6 +86,8 @@ def loginrequest():
 def register():
 	# return render_template('user_reg.html',colleges=colg_name.keys())
 	# clgs = colleges.keys()
+	if  check_session(): return redirect(url_for('Classs'))
+
 	clg_list=college.collegelist(c)
 
 	return render_template('register.html', clgs=clg_list)
@@ -407,4 +409,4 @@ def downloaddb():
 
 # app.run(debug=True)
 if __name__ == '__main__':
-	socketio.run(app,debug=debug)
+	socketio.run(app,debug=False)

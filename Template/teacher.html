@@ -50,7 +50,7 @@
 <body  > 
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top" style="font-size: large;">
-			<a class="navbar-brand" href="#" style="font-size:x-large;">WELCOME TO DIGITAL CLASSES</a>
+			<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			  <span class="navbar-toggler-icon"></span>
 			</button>
@@ -60,10 +60,10 @@
 				  <a class="nav-link" href="#">Home </a>
 				</li>
 				<li class="nav-item">
-				  <a class="nav-link" href="#">Features</a>
+				  <!-- <a class="nav-link" href="#">Features</a> -->
 				</li>
 				<li class="nav-item">
-				  <a class="nav-link" href="#">Pricing</a>
+				  <!-- <a class="nav-link" href="#">Pricing</a> -->
 				</li>
 				
 			  </ul>
@@ -104,12 +104,13 @@
 		</div> -->
 		<div class="card-body">
 			<form action="/add_class" method="post" class="form">
-				<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" autocomplete="off">
+				<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" autocomplete="off" onkeyup="check_classavail()">
 				<!-- <button onclick="check_classavail()">Check Availability</button> -->
 				<textarea class="form-control" name="desc" placeholder="Enter class description" id="exampleFormControlTextarea1" rows="3"></textarea>
 				<div id="print">
 				
 				</div>
+				<br>
 				<input type="submit" name="" value="Create">
 				<!--  -->
 
@@ -138,7 +139,7 @@
 		{{ desc }}
 	</div> -->
 	<div class="card">
-		<h5 class="card-header">Digital Classes</h5>
+		<h5 class="card-header"></h5>
 		<div class="card-body" style="background-color: #5c8a8a;">
 		  <h5 class="card-title" style="color: #d1d0cd;">
 			<font size="9px">
@@ -176,13 +177,13 @@
 			<div class="form-group row">
 			  <label for="Assignment" class="col-sm-2 col-form-label" >Assignment</label>
 			  <div class="col-sm-10">
-				<input type="text"  class="form-control" id="ass_name" placeholder="Assignment name"style="margin-left: 10px;">
+				<input type="text"  class="form-control" id="ass_name" placeholder="Assignment Name"style="margin-left: 10px;">
 			  </div>
 			</div>
 			<div class="form-group row">
 			  <label for="Description" class="col-sm-2 col-form-label">Description</label>
 			  <div class="col-sm-10">
-				<textarea class="form-control" id="ass_desc" placeholder="Password"style="margin-left: 10px;"></textarea>
+				<textarea class="form-control" id="ass_desc" placeholder="Description"style="margin-left: 10px;"></textarea>
 			  </div>
 			</div>
 			<div class="form-group row">
@@ -191,8 +192,8 @@
 				  <input type="date" class="form-control" id="ass_date" placeholder="Date" style="margin-left: 10px;">
 				</div>
 			  </div>
-			  <button class="btn btn-success" onclick="createAss()">submit</button>
-				<button class="btn btn-danger" onclick="cancel()">cancel</button>
+			  <button class="btn btn-success" onclick="createAss()">Submit</button>
+				<button class="btn btn-danger" onclick="cancel()">Cancel</button>
 		  </form>
 </div>
 <!-- <form action="/add_class" method="post" class="form">

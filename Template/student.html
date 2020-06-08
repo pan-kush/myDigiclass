@@ -124,7 +124,7 @@
 <body>
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top" style="font-size: large;">
-			<a class="navbar-brand" href="#" style="font-size:x-large;">WELCOME TO DIGITAL CLASSES</a>
+			<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			  <span class="navbar-toggler-icon"></span>
 			</button>
@@ -134,10 +134,10 @@
 				  <a class="nav-link" href="#">Home </a>
 				</li>
 				<li class="nav-item">
-				  <a class="nav-link" href="#">Features</a>
+				  <!-- <a class="nav-link" href="#">Features</a> -->
 				</li>
 				<li class="nav-item">
-				  <a class="nav-link" href="#">Pricing</a>
+				  <!-- <a class="nav-link" href="#">Pricing</a> -->
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -236,18 +236,17 @@
 		{{ desc }}
 	</div> -->
 	<div class="card">
-		<h5 class="card-header">Digital Classes</h5>
-		<div class="card-body">
+		<h5 class="card-header">Instructor : {{ class.creator }}</h5>
+		<div class="card-body" style="border-bottom: 1px; border-color: black">
 		  <h5 class="card-title">
 			<font size="9px">
 				<a href="#">{{ class.cls_id }}</a><span class="totalCount" style="float: right;"><font size="4px">Total Students : </font>{{ class.participants }}</span>
 				<br>
 			</font>
 		  </h5>
-		  <b>{{ class.creator }}</b>
 		  <p class="card-text">{{ class.desc }}</p>
 		  <a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="btn btn-primary">Go to Classes</a>
-		  <a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary">View Assignmnet</a>
+		  <a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary">View Assignmnt</a>
 		  <button class="btn btn-primary" style="background-color: red;border-color: red" onclick='removeClass("{{ class.cls_id }}")' >Remove Class</button>
 
 		</div>

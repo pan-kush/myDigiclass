@@ -80,13 +80,32 @@
     		color: #555;
    			font-family: 'poppins', sans-serif;
 		}
+
+		::-webkit-scrollbar {
+		  width: 6px;
+		}
+
+		/* Track */
+		::-webkit-scrollbar-track {
+		  background: white;
+		}
+
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		  background: #888;
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		  background: #555;
+		}
 		
 		
 		</style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: large;">
-		<a class="navbar-brand" href="#" style="font-size:x-large;">WELCOME TO DIGITAL CLASSES</a>
+		<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
@@ -96,10 +115,10 @@
 			  <a class="nav-link" href="#">Home </a>
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">About us</a>
+			  <!-- <a class="nav-link" href="#">About us</a> -->
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">Contact Us</a>
+			  <!-- <a class="nav-link" href="#">Contact Us</a> -->
 			</li>
 			
           </ul>
@@ -129,10 +148,19 @@
 					<div class="i">
 							<i class="fas fa-user"></i>
 					</div>
-					<div class="div">
+					<div class="div" class="dropdown-check-list" tabindex="100" style="float: right;margin: 1%;z-index: 2;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<!-- <h5>Select College</h5> -->
-							<input type="text" name="user_data1" id="user_data_clgname" placeholder="Select Your Collge Name" onclick="fun()" required="true" class="input">
+							<input type="text" name="user_data1" id="user_data_clgname" placeholder="Select Your College Name" required="true" class="input">
 							
+								<ul class="dropdown-menu" style="text-align: left; width: 100%">
+							<!-- <li><input type="checkbox" />Apple </li> -->
+							<div style="text-align: left;height: 70%;overflow: scroll;">
+								{% for clg in clgs %}
+								  <li class="dropdown-item" style="text-align: left;margin:2%;" onclick="closeForm('{{ clg }}')">{{ clg }}</li>
+								 {% endfor %}
+							</div>
+							</ul>
+
 							<div id="print">
 									{% with messages = get_flashed_messages() %}
 				                      {% if messages %}
@@ -206,7 +234,7 @@
                     </div>
                     <div class="div">
                          <!-- <h5>Password</h5> -->
-                         <input type="text" class="input" name="user_data6" id="user_data6" placeholder="ROLL" >
+                         <input type="text" class="input" name="user_data6" id="user_data6" placeholder="Roll" disabled>
                  </div>
               </div>
             	
@@ -288,7 +316,9 @@
 			t=document.getElementById('teacher1')
 			if (t.checked){
 
+				document.getElementById('user_data6').value=""
 				document.getElementById('user_data6').disabled=true;
+
 				document.getElementById('user_data6').placeholder="Not Required"
 			}
 			else {

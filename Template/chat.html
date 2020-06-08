@@ -202,10 +202,10 @@
 			  <a class="nav-link" href="#">Home </a>
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">Features</a>
+			  <!-- <a class="nav-link" href="#">Features</a> -->
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">Pricing</a>
+			  <!-- <a class="nav-link" href="#">Pricing</a> -->
 			</li>
 			
 		  </ul>
@@ -268,22 +268,26 @@
 				<div class="chat-header" style="border-radius: 10px;margin-top:5px" >
 					<h2 style="float: left;margin-left: 2%;">Class-{{ cls.cls_id }}</h2>
 					{% if occ=='teacher' %}
-					<div id="list1" class="dropdown-check-list" tabindex="100" style="float: right;margin: 1%;z-index: 2;">
+					<div id="list1" class="dropdown-check-list" tabindex="100" style="float: right;margin: 1%;z-index: 2;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				        <span class="anchor">Block chat <span id="num">[{{ num }}]</span> 
 				        	<span class="tooltip">Check to Block</span>
 				        </span>
-				        <ul class="items">
+				        <ul class="dropdown-menu" style="text-align: center;height: 40%">
 				            <!-- <li><input type="checkbox" />Apple </li> -->
-				            <li style=" color:black;"><input type="checkbox" onclick="toggleAll()">Toggle All</li>
+				            <div style="text-align: left;overflow: scroll;height: 90%">
+				            <li style=" color:black;" class="dropdown-item"><input type="checkbox" onclick="toggleAll()">Toggle All</li>
 				            {% for stud in studs %}
-				            	<li style=" color:black;"><input type="checkbox" name="user" value="{{ stud.user_id }}" 
+				            	<li style=" color:black;" class="dropdown-item"><input type="checkbox" name="user" value="{{ stud.user_id }}" 
 				            		{% if stud.allowed %}
 				            		   checked
 				            		{% endif %} >
 				            		{{ stud.name }},{{ stud.roll }}
 				            	</li>
 				            {% endfor %}
-				            <button onclick="checkPrivilage('{{ cls.cls_id }}')">submit</button>
+				        </div>
+				        <div style="position: fixed;bottom: 0%;width: 100%;padding: 2%">
+				            <button class="btn btn-primary" onclick="checkPrivilage('{{ cls.cls_id }}')">submit</button>
+				        </div>
 				        </ul>
 					</div>
 				

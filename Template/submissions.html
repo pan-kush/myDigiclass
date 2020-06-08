@@ -28,10 +28,10 @@
 			  <a class="nav-link" href="#">Home </a>
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">Features</a>
+			  <!-- <a class="nav-link" href="#">Features</a> -->
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">Pricing</a>
+			  <!-- <a class="nav-link" href="#">Pricing</a> -->
 			</li>
 			
 		  </ul>
@@ -53,12 +53,11 @@
 	</div>
 	<div class="card-body">
 	  <h5 class="card-title">Name : {{ ass.ass_name}}</h5>
-	  <h5 class="card-title">ID : {{ ass.ass_id}}</h5>
-	  <p class="card-text">Here You have to provide all the Assignment details in brief</p>
-	  <a href="#" class="btn btn-primary">View All Assignments</a>
+	  <p class="card-text">{{ ass.desc }}</p>
+	  <a href="{{ url_for('viewAss',cls_id=c_id) }}" class="btn btn-primary">View All Assignments</a>
 	</div>
 	<div class="card-footer text-muted">
-		deadline: {{ ass.deadline }}
+		Deadline: {{ ass.deadline }}
 	</div>
   </div>
 </div>
