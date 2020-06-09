@@ -125,7 +125,7 @@
 				</div>
 				<input type="text" name="" id="ans" placeholder="Correct Answer">
 			
-				<div id="quests">
+				<div id="quests" style="text-align: left;color: white">
 					
 				</div>
 				
@@ -183,7 +183,7 @@
 			k.innerHTML+=o[i].value+"<br>"
 		}
 
-		document.getElementById("optionss").remove()
+		document.getElementById("optionss").innerHTML=""
 		ans=document.getElementById("ans").value
 		d['ans']=ans
 		ls['q'+ques_count]=d

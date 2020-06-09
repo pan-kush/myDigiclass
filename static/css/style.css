@@ -7,22 +7,8 @@
 	font-size: large;
 }
 
-.nav-link:hover{
-	color: #EC6868!important;
-}
-
-.nav-link:active {
-	color: #EC6868!important;
-
-}
-
 .navbar-brand{
 	font-size: 500px;
-}
-
-.logo img {
-	height: 3rem;
-	width: auto;
 }
 
 body{
@@ -81,7 +67,7 @@ form{
 }
 
 .login-content img{
-    height: 50px;
+    height: 100px;
 }
 
 .login-content h2{
@@ -194,28 +180,24 @@ a:hover{
 }
 
 .btn{
-	font-weight: bold;
 	display: block;
 	width: 100%;
 	height: 50px;
 	border-radius: 25px;
 	outline: none;
 	border: none;
-	background-color:  #38d39f;
+	background-image: linear-gradient(to right,#669999,  #5c8a8a, #3d5c5c);
 	background-size: 200%;
 	font-size: 1.2rem;
-	letter-spacing: 0.5px;
 	color: #fff;
-	font-family: 'Monteserrat', sans-serif;
+	font-family: 'Poppins', sans-serif;
 	text-transform: uppercase;
 	margin: 1rem 0;
 	cursor: pointer;
 	transition: .5s;
 }
 .btn:hover{
-	background-color: #fff;
-	color: #38d39f;
-	border: 1.5px solid #38d39f;
+	background-position: right;
 }
 
 
@@ -257,5 +239,3 @@ a:hover{
 		justify-content: center;
 	}
 }
-
-/* Teacher Page */

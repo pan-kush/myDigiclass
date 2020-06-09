@@ -15,6 +15,8 @@ from Data_Models.College import *
 from Data_Models.User import *
 from Data_Models.Class import *
 from Data_Models.Assignment import *
+from Data_Models.Chat import *
+from Data_Models.Announcements import *
 from Data_Models.Test import *
 
 import re,platform
@@ -206,6 +208,7 @@ def createAss():
 	conn.commit()
 	return redirect('/Class')
 
+
 @app.route('/viewAss')
 def viewAss():
 	if not check_session(): return redirect(url_for('login'))
@@ -243,6 +246,21 @@ def submitAss():
 	# return url_for('send',data="",file=file_name)
 	return redirect(url_for("viewAss",cls_id=ass_id.split("_")[-2]))
 
+@app.route('/updateAss',methods=["POST"])
+def updateAss():
+
+	if not check_session(): return redirect(url_for('login'))
+	ass_id=request.form.get("ass_id")
+	ass_name=request.form.get("ass_name")
+	ass_desc=request.form.get("ass_desc")
+	ass_date=request.form.get("ass_date")
+	a=assignment.editAss(c,ass_id,ass_name,ass_date,ass_desc)
+	cls_id=ass_id.split("_")[1]
+	conn.commit()
+	return redirect('/viewAss?cls_id='+cls_id)
+
+
+
 @app.route('/submissions')
 def submissions():
 	ass_id=request.args.get("ass_id")
@@ -272,6 +290,77 @@ def removeAss():
 	assignment.remove(c,ass_id)
 	conn.commit()
 	return redirect('/Class')
+
+
+@app.route('/chats')
+def chats():
+	if not check_session(): return redirect(url_for('login'))
+	cls_id=session['user']['clg_id']+"_"+request.args.get("cls_id")
+	classes=Class.allclasses(c,None,cls_id)
+	posts=chat.getChats(c,cls_id)
+	allowed=chat.isAllowed(c,session['user']['user_id'],cls_id)
+	studs,num=Class.getAllStuds(c,cls_id)
+	announce=announcements.getAnnouncements(c,cls_id)
+	print(studs,posts)
+	return render_template("chat.html",num=num,cls=classes,posts=posts,studs=studs,allowed=allowed,occ=session['user']['occ'],user_id=session['user']['user_id']
+		,name=session['user']['name'],announce=reversed(announce))
+
+@socketio.on("delChat")
+def delChat(chat_id):
+	if session['user']['occ']=='teacher':
+		chat.delChat(c,chat_id)
+		conn.commit()
+		emit("delliveChat",chat_id,room=session['room'])
+
+@socketio.on("connect")
+def connect():
+    print("client wants to connect")
+    # emit("status", { "data": "Connected. Hello!" })
+
+@socketio.on('join')
+def on_join(data):
+    room = data
+    
+    # check if current user has subscribed to the class/ else dont join
+    
+    join_room(room)
+    session['room']=room
+    # emit('msg',data + ' has entered the room.', room=room)
+
+@socketio.on('send')
+def send(file,data):
+	print("\n\nXXXXrecei: ",str(data),str(file),sep="_")
+	time = ":".join(str(datetime.now()).split(':')[:-1])
+	usr = session['user']['user_id']
+	occ = session['user']['occ']
+	clg_cls_id = session['user']['clg_id']+"_"+session['room']
+	chat_id = clg_cls_id+"_"+str(datetime.now())
+	new_chat = chat(clg_cls_id,usr,chat_id,time,data,file)
+	img = True if file.split('.')[-1] in ['jpg','png','jpeg'] else False
+	new_chat.add(c)
+	conn.commit()
+	reply={'cls_id':clg_cls_id,'user_id':usr,'chat_id':chat_id,
+			'time':time,'text':data,'file':file,'occ':occ,'img':img,'name':session['user']['name']}
+	emit("reply",reply,room=session['room'])
+
+@socketio.on('send_Announce')
+def send_Announce(file,data):
+	clg_cls_id = session['user']['clg_id']+"_"+session['room']
+	ann_id=clg_cls_id+"_"+str(datetime.now())
+	new_announce=announcements(clg_cls_id,ann_id,data,file)
+	new_announce.add(c)
+	conn.commit()
+	announce={'cls_id':clg_cls_id,'ann_id':ann_id,'data':data,'file':file}
+	emit("announce",announce,room=session['room'])
+
+
+@socketio.on('changePrivilage')
+def changePrivilage(d,cls_id):
+	print(d)
+	for user_id,check in d.items():
+		Class.changePrivilage(c,user_id,session['user']['clg_id']+"_"+cls_id,check)
+		conn.commit()
+	emit('updatePrivilage',d,room=session['room'])
 	
 
 @app.route('/upload',methods=['POST'])
@@ -333,7 +422,6 @@ def downloaddb():
 	else:
 		return "You don't have Permission"
 
-
 @app.route('/create_test',methods=['GET'])
 def create_test():
 
@@ -341,6 +429,7 @@ def create_test():
 
 	cls_id=request.args.get("cls_id")
 	return render_template("create_test.html",cls_id=cls_id)
+
 
 @app.route('/set_paper',methods=['POST'])
 def set_paper():
@@ -367,21 +456,74 @@ def set_paper():
 		opts.append(ques_set[i]['opts'])
 		ans.append(ques_set[i]['ans'])
 	cls_id=session['user']['clg_id']+'_'+cls_id
-	test_id=cls_id+str(datetime.now())
+	test_id=cls_id+"_"+str(time.time())
 	t=test(cls_id,test_id,qlist,opts,ans)
 	t.add(c)
 	t.addtoclrtest(c,cls_id,test_id,test_name,test_desc,test_time)
 	conn.commit()
 	return "ok"
+		
 
+@app.route('/view_test',methods=['GET'])
+def view_test():
 
+	if not check_session(): return redirect(url_for('login'))
+
+	cls_id=request.args.get("cls_id")
+	user_id=session['user']['user_id']
+	clg_id=session['user']['clg_id']
+	tests=test.getTests(c,clg_id+"_"+cls_id,user_id)
+	print(clg_id+'_'+cls_id)
+	teacher,desc=Class.getteacher_desc(c,clg_id+'_'+cls_id)
+	# u_name=session['user']['name']
+
+	return render_template("view_test.html",cls_id=cls_id,tests=tests,
+							username=session['user']['user_id'],clg_id=clg_id,
+							teacher=teacher,occ=session['user']['occ'],name=session['user']['name'],
+							desc=desc)
+	
 @app.route('/take_test',methods=["GET"])
 def take_test():
 
-	cls_id=request.args.get("cls_id")
-	return render_template("student_test.html",cls_id=cls_id)
 
-	
+	test_id=request.args.get("test_id")
+	cls_id=test_id.split("_")[1]
+	user_id=session['user']['user_id']
+	status=test.test_validation(c,user_id,test_id)
+	if status:
+		return redirect(url_for('Classs'))
+
+	ques,ques_count=test.getQuests(c,test_id)
+	details=test.getDetails(c,test_id)
+	return render_template("testroom.html",quests=ques,d=details,ques_count=ques_count)
+
+@app.route('/grademe',methods=["POST"])
+def grademe():
+
+	ques_count=int(request.form.get("ques_count"))
+	test_id=request.form.get("test_id")
+	cls_id=test_id.split("_")[1]
+	user_id=session['user']['user_id']
+	ans=[]
+	for i in range(ques_count):
+		ans.append(request.form.get(str(i)))
+	m=test.getMarks(c,test_id,ans)
+	mar=str(m)+'/'+str(ques_count)
+	test.addUserMarks(c,m,user_id,test_id)
+	conn.commit()
+	print(mar)
+	return redirect(url_for('view_test',cls_id=cls_id))
+
+@app.route('/marksheet',methods=["GET"])
+def marksheet():
+	test_id=request.args.get("test_id")
+	marks=test.getAllResults(c,test_id)
+	cls_id=test_id.split("_")[1]
+	details=test.getDetails(c,test_id)
+	return render_template("marksheet.html",marks=marks,d=details,occ=session['user']['occ'],cls_id=cls_id,test_id=test_id)
+
+
+
 # app.run(debug=True)
 if __name__ == '__main__':
 	socketio.run(app,debug=True)

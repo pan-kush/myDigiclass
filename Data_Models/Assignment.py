@@ -105,3 +105,9 @@ class assignment:
 		#we have to delete file from upload folder
 		c.execute("delete from ura where ass_id=? and user_id=?",(ass_id,user_id))
 		#remove files from upload
+
+	@staticmethod
+	def editAss(c,ass_id,name,date,desc,):
+
+		c.execute("update assignment set ass_name=?,deadline=?,desc=? where ass_id=?",(name,date,desc,ass_id))
+		

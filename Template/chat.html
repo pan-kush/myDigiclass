@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -267,7 +268,8 @@
 				<div class="chat-header" style="border-radius: 10px;margin-top:5px" >
 					<h2 style="float: left;margin-left: 2%;">Class-{{ cls.cls_id }}</h2>
 					{% if occ=='teacher' %}
-					<div class="dropdown" style="position:relative;top: 25%;left: 45%">
+					
+				        <div class="dropdown" style="position:relative;top: 25%;left: 45%">
 						<a href="#" data-toggle="dropdown" class="dropdown-toggle" style="color:white;border: 1px solid white; padding: 1%"><span class="anchor">Block chat <span id="num">[{{ num }}]</span><b class="caret"></b></a>
 						<ul class="dropdown-menu" style="text-align: center;">
 						    <!-- <li><input type="checkbox" />Apple </li> -->
@@ -291,7 +293,6 @@
 						    </div>
 						</ul>
 						</div>
-				
 				    {% endif %}
 				</div>
 				<div id="post" style="height: 350px;padding-top: 10px; overflow-y: scroll;" onload="scroll()">
