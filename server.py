@@ -15,8 +15,7 @@ from Data_Models.College import *
 from Data_Models.User import *
 from Data_Models.Class import *
 from Data_Models.Assignment import *
-from Data_Models.Chat import *
-from Data_Models.Announcements import *
+from Data_Models.Test import *
 
 import re,platform
 
@@ -38,9 +37,9 @@ app.config['PERMANENT_SESSION_LIFETIME']=timedelta(minutes=150)
 socketio=SocketIO(app)
 
 #printdb
-for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements']:
+for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements','test','urtest','clrtest']:
 	c.execute("select * from "+i)
-	# print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
+	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
 
 def check_session():
 	if 'user' in session:
@@ -192,7 +191,6 @@ def removeClass():
 	conn.commit()
 	return redirect('/Class')
 
-
 @app.route('/createAss',methods=["POST"])
 def createAss():
 	if not check_session(): return redirect(url_for('login'))
@@ -274,77 +272,6 @@ def removeAss():
 	assignment.remove(c,ass_id)
 	conn.commit()
 	return redirect('/Class')
-
-
-@app.route('/chats')
-def chats():
-	if not check_session(): return redirect(url_for('login'))
-	cls_id=session['user']['clg_id']+"_"+request.args.get("cls_id")
-	classes=Class.allclasses(c,None,cls_id)
-	posts=chat.getChats(c,cls_id)
-	allowed=chat.isAllowed(c,session['user']['user_id'],cls_id)
-	studs,num=Class.getAllStuds(c,cls_id)
-	announce=announcements.getAnnouncements(c,cls_id)
-	print(studs,posts)
-	return render_template("chat.html",num=num,cls=classes,posts=posts,studs=studs,allowed=allowed,occ=session['user']['occ'],user_id=session['user']['user_id']
-		,name=session['user']['name'],announce=reversed(announce))
-
-@socketio.on("delChat")
-def delChat(chat_id):
-	if session['user']['occ']=='teacher':
-		chat.delChat(c,chat_id)
-		conn.commit()
-		emit("delliveChat",chat_id,room=session['room'])
-
-@socketio.on("connect")
-def connect():
-    print("client wants to connect")
-    # emit("status", { "data": "Connected. Hello!" })
-
-@socketio.on('join')
-def on_join(data):
-    room = data
-    
-    # check if current user has subscribed to the class/ else dont join
-    
-    join_room(room)
-    session['room']=room
-    # emit('msg',data + ' has entered the room.', room=room)
-
-@socketio.on('send')
-def send(file,data):
-	print("\n\nXXXXrecei: ",str(data),str(file),sep="_")
-	time = ":".join(str(datetime.now()).split(':')[:-1])
-	usr = session['user']['user_id']
-	occ = session['user']['occ']
-	clg_cls_id = session['user']['clg_id']+"_"+session['room']
-	chat_id = clg_cls_id+"_"+str(datetime.now())
-	new_chat = chat(clg_cls_id,usr,chat_id,time,data,file)
-	img = True if file.split('.')[-1] in ['jpg','png','jpeg'] else False
-	new_chat.add(c)
-	conn.commit()
-	reply={'cls_id':clg_cls_id,'user_id':usr,'chat_id':chat_id,
-			'time':time,'text':data,'file':file,'occ':occ,'img':img,'name':session['user']['name']}
-	emit("reply",reply,room=session['room'])
-
-@socketio.on('send_Announce')
-def send_Announce(file,data):
-	clg_cls_id = session['user']['clg_id']+"_"+session['room']
-	ann_id=clg_cls_id+"_"+str(datetime.now())
-	new_announce=announcements(clg_cls_id,ann_id,data,file)
-	new_announce.add(c)
-	conn.commit()
-	announce={'cls_id':clg_cls_id,'ann_id':ann_id,'data':data,'file':file}
-	emit("announce",announce,room=session['room'])
-
-
-@socketio.on('changePrivilage')
-def changePrivilage(d,cls_id):
-	print(d)
-	for user_id,check in d.items():
-		Class.changePrivilage(c,user_id,session['user']['clg_id']+"_"+cls_id,check)
-		conn.commit()
-	emit('updatePrivilage',d,room=session['room'])
 	
 
 @app.route('/upload',methods=['POST'])
@@ -407,6 +334,54 @@ def downloaddb():
 		return "You don't have Permission"
 
 
+@app.route('/create_test',methods=['GET'])
+def create_test():
+
+	if not check_session(): return redirect(url_for('login'))
+
+	cls_id=request.args.get("cls_id")
+	return render_template("create_test.html",cls_id=cls_id)
+
+@app.route('/set_paper',methods=['POST'])
+def set_paper():
+
+	if not check_session(): return redirect(url_for('login'))
+
+	ques_set=request.get_json()
+	# print(ques_set)
+	test_name=ques_set['test_name']
+	test_desc=ques_set['test_desc']
+	test_time=ques_set['test_time']
+	del(ques_set['test_name'])
+	del(ques_set['test_desc'])
+	del(ques_set['test_time'])
+	cls_id=ques_set['cls_id']
+	del(ques_set['cls_id'])
+
+	qlist=[]
+	opts=[]
+	ans=[]
+	for i in ques_set:
+		print(ques_set[i])
+		qlist.append(ques_set[i]['ques'])
+		opts.append(ques_set[i]['opts'])
+		ans.append(ques_set[i]['ans'])
+	cls_id=session['user']['clg_id']+'_'+cls_id
+	test_id=cls_id+str(datetime.now())
+	t=test(cls_id,test_id,qlist,opts,ans)
+	t.add(c)
+	t.addtoclrtest(c,cls_id,test_id,test_name,test_desc,test_time)
+	conn.commit()
+	return "ok"
+
+
+@app.route('/take_test',methods=["GET"])
+def take_test():
+
+	cls_id=request.args.get("cls_id")
+	return render_template("student_test.html",cls_id=cls_id)
+
+	
 # app.run(debug=True)
 if __name__ == '__main__':
-	socketio.run(app,debug=False)
+	socketio.run(app,debug=True)

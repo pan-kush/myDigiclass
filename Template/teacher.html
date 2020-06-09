@@ -3,6 +3,60 @@
 <head>
 	<title>MY Classroom - Teacher</title>
 	<style type="text/css">
+		html {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		.logo img {
+			height: 3rem;
+			width: auto;
+		}
+		.card {
+			box-shadow: 2px 2px 10px #333;
+			padding: 20px;
+			text-align: center;
+			border-radius: 8px!important;
+		}
+
+		.position-fixed {
+			margin:auto;
+			padding-left: 20px;
+		}
+		.card-img-top {
+			margin: 20px 0 0px 0;
+			max-width: 150px;
+			height: auto;
+		}
+		.card-body{
+		
+			margin: 0px;
+			padding: 0px;
+			font-family: monospace;
+			text-align: center;
+		}
+
+		.custom-btn {
+			background-color: #fff;
+			color: #EC6868;
+			border: 1.5px solid #EC6868;
+			font-size: 1.2rem;
+			padding-top: 2px;
+			border-radius: 4px;
+			width:60%;
+			height: auto;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			/* font-weight: bold; */
+		}
+
+		.custom-btn:hover {
+			background-color: #EC6868;
+			color:#fff;
+		}
+
+
 		.classes{
 			border: 1px solid black; 
 			background: #d1d0cd;
@@ -16,14 +70,26 @@
 		.input{
 			border-radius: 5px;
 			margin-bottom: 10px;
-			padding-bottom: 10px;
+			padding-bottom: 2px;
+			padding-left: 8px;
 		}
 		body {
-  		background-image: url('/static/img/bg6.webp');
-  		background-repeat: no-repeat;
-  		background-attachment: fixed;
-  		background-size: 100% 100%;
-}
+			background-color: #ccc;
+			font-family: monospace;
+			/* background-repeat: no-repeat; */
+			/* background-attachment: fixed; */
+			/* background-size: 100% 100%; */
+		}
+
+
+		.nav-link:hover{
+			color: #EC6868!important;
+		}
+
+		.nav-link:active {
+			color: #EC6868!important;
+
+		}
 @media screen and (max-width: 950px){
 	.col-4{
 		display: none;
@@ -40,6 +106,7 @@
 }
 	
 	</style>
+	<!-- <link rel="stylesheet" href="../static/css/style.css"> -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
 	<!-- JS, Popper.js, and jQuery -->
@@ -47,25 +114,18 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
-<body  > 
-
+<body style="background-color: #ccc;" > 
+	<div class="container-fluid p-0">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top" style="font-size: large;">
-			<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom</a>
+			<a class="navbar-brand logo" href="#" style="font-size:x-large;"><img src="../static/img/logo.png" alt="" srcset=""></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			  <span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav" style="font-size: larger;">
 			  <ul class="navbar-nav mr-auto">
 				<li class="nav-item ">
-				  <a class="nav-link" href="#">Home </a>
+				  <a class="nav-link" href="/Class">Home </a>
 				</li>
-				<li class="nav-item">
-				  <!-- <a class="nav-link" href="#">Features</a> -->
-				</li>
-				<li class="nav-item">
-				  <!-- <a class="nav-link" href="#">Pricing</a> -->
-				</li>
-				
 			  </ul>
 			  <font color="white">{{ teacher }}</font>
 			  <ul class="navbar-nav " style="margin-right: 100px;">
@@ -78,57 +138,57 @@
 		  </nav>
 
 
-<div class="container-fluid" style=" background: linear-gradient(to right, #293d3d 0%, #b3cccc 98%);">
+<div class="container-fluid" style=" background: #ccc">
 	
  <!-- <div id="teacher_name">
 	{{ teacher }}
  </div> -->
  <div class="row">
-<div class="col-4 " style="padding-top: 10px;">
-	<div class="position-fixed">
-	<div class="card" style="width: 18rem;">
-		<img class="card-img-top" src="/static/img/avatar.svg" style="width:200px;height:200px;margin-left: auto;margin-right: auto;">
-		<div class="card-body">
+		<div class="col-4 " style="padding-top: 20px; padding-bottom: 20px; padding-left: auto; padding-right: auto;">
+		<div style="text-align: center;"class="position-fixed mr-3">
+		<div class="card" style="margin:auto;width: 18rem;">
+			<img class="card-img-top" src="/static/img/avatar.svg" style="width:200px;height:150px;margin-left: auto;margin-right: auto;">
+			<div class="card-body">
 
-		  <h5 class="card-title">{{ teacher }}</h5>
-		  <h6>{{ clg_name }}</h6>
+			<h5 class="card-title">{{ teacher }}</h5>
+			<h6>{{ clg_name }}</h6>
 
-		  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+			<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+			</div>
+			<ul class="list-group list-group-flush">
+			<!-- <li class="list-group-item">blog-1</li> -->
+			
+			</ul>
+			<!-- <div class="card-body">
+			<a href="#" class="card-link">Update-Profile</a>
+			</div> -->
+			<div class="card-body">
+				<form action="/add_class" method="post" class="form">
+					<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" autocomplete="off" onkeyup="check_classavail()">
+					<!-- <button onclick="check_classavail()">Check Availability</button> -->
+					<textarea class="form-control" name="desc" placeholder="Enter class description" id="exampleFormControlTextarea1" rows="2"></textarea>
+					<div id="print">
+					
+					</div>
+					<br>
+					<input class="custom-btn" type="submit" name="" value="Create">
+					<!--  -->
+
+					</form>
+						{% with messages = get_flashed_messages() %}
+						{% if messages %}
+							{% for message in messages %}
+							<script type="text/javascript">
+							alert("{{ message }}");
+							</script>
+							{% endfor %}
+						{% endif %}
+						{% endwith %}
+			</div>
 		</div>
-		<ul class="list-group list-group-flush">
-		  <!-- <li class="list-group-item">blog-1</li> -->
-		 
-		  </ul>
-		<!-- <div class="card-body">
-		  <a href="#" class="card-link">Update-Profile</a>
-		</div> -->
-		<div class="card-body">
-			<form action="/add_class" method="post" class="form">
-				<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" autocomplete="off" onkeyup="check_classavail()">
-				<!-- <button onclick="check_classavail()">Check Availability</button> -->
-				<textarea class="form-control" name="desc" placeholder="Enter class description" id="exampleFormControlTextarea1" rows="3"></textarea>
-				<div id="print">
-				
-				</div>
-				<br>
-				<input type="submit" name="" value="Create">
-				<!--  -->
-
-				</form>
-					{% with messages = get_flashed_messages() %}
-                      {% if messages %}
-                        {% for message in messages %}
-                          <script type="text/javascript">
-                          alert("{{ message }}");
-                          </script>
-                        {% endfor %}
-                      {% endif %}
-                    {% endwith %}
 		</div>
-	  </div>
-	  </div>
-</div>
-<div class="col-8" style="height: 550px;padding-top: 10px; overflow-y: scroll;">
+	</div>
+	<div class="col-8" style="height: 550px;padding-top: 10px; overflow-y: scroll;">
 	<div id="classes"  >
 	{% for class in classes %}
 	<!-- <div class='classes'>
@@ -138,19 +198,19 @@
 		</font>
 		{{ desc }}
 	</div> -->
-	<div class="card">
+	<div class="card"  style="margin-bottom: 25px;background-color: #fff;">
 		<h5 class="card-header"></h5>
-		<div class="card-body" style="background-color: #5c8a8a;">
-		  <h5 class="card-title" style="color: #d1d0cd;">
-			<font size="9px">
-				<a href="{{ url_for('chats',cls_id = class.cls_id) }}" style="color: aliceblue;">{{ class.cls_id }}</a><span class="totalCount"style="float: right;"><font size="4px">Total Students : </font>{{ class.participants }}</span>
+		<div class="card-body" style="background-color: #fff;">
+		  <h5 class="card-title" style="color: #fff;">
+			<font size="9px" style="color: #333;text-align: left;">
+				<a href="#" style="color: #333;">{{ class.cls_id }}</a><span class="totalCount"style="float: right;"><font size="4px">Total Students : </font>{{ class.participants }}</span>
 				<br>
 			</font>
 		  </h5>
 		  <p class="card-text">{{ class.desc }}</p>
-		  <a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="btn btn-primary">Go to Classes</a>
 		  <a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary">View Assignment</a>
 		  <button class="btn btn-primary" onclick='popUp("{{ class.cls_id }}")'>Add Assignment</button>
+		  <a target="_blank" href="/create_test?cls_id={{ class.cls_id }}" class="btn btn-primary">Create Test</a>
 		  <button class="btn btn-primary" style="background-color: red;border-color: red"onclick='deleteClass("{{ class.cls_id }}")' >Delete Class</button>
 		</div>
 		</div>
@@ -162,7 +222,7 @@
 </div>
 <div style="position: absolute;top: 10%;left: 10%;border: 1px solid whitesmoke;height: 250px;width: 500px;display: none;background: white;opacity: 1;" id="ass_container">
 	<!-- form here -->
-	<!-- Assignment:
+	Assignment:
 		<input type="text" id="ass_name" placeholder="name">
 		<br>
 	Description:
@@ -172,7 +232,7 @@
 		<input type="date" id='ass_date' placeholder="deadline">
 	<br>
 		<button onclick="createAss()">submit</button>
-		<button onclick="cancel()">cancel</button> -->
+		<button onclick="cancel()">cancel</button>
 		<form class="Ass_popup" style="padding: 5px;margin: 5px;">
 			<div class="form-group row">
 			  <label for="Assignment" class="col-sm-2 col-form-label" >Assignment</label>
@@ -196,13 +256,13 @@
 				<button class="btn btn-danger" onclick="cancel()">Cancel</button>
 		  </form>
 </div>
-<!-- <form action="/add_class" method="post" class="form">
+<form action="/add_class" method="post" class="form">
 <input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" onkeyup="check_avl3()">
 <input type="hidden" class="input" name="username" id="username" value="0">
 <div id="print">
 
 </div>
-<input type="submit" name=""> -->
+<input type="submit" name="">
 <script type="text/javascript" src="/static/js/teacher.js"></script>
 <script type="text/javascript" >
 	function deleteClass(cls_id) {
@@ -259,5 +319,8 @@
 
 </form>
 </div>
+	</div>
+
+		
 </body>
 </html>
