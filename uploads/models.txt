@@ -69,3 +69,22 @@ CREATE TABLE IF NOT EXISTS announcements(
 	content text,
 	file text
 );
+CREATE TABLE IF NOT EXISTS clrtest(
+	cls_id text,
+	test_id text,
+	test_name text,
+	test_desc text,
+	test_time text
+);
+CREATE TABLE IF NOT EXISTS test(
+	cls_id text ,
+	test_id text PRIMARY KEY,
+	quest text,
+	opts text,
+	ans text
+);
+CREATE TABLE IF NOT EXISTS urtest(
+	user_id text,
+	test_id text,
+	marks text
+);

@@ -171,14 +171,19 @@
                       {% endif %}
                     {% endwith %}
 <form method="post" action='/submitAss' enctype="multipart/form-data">
-<div style="position: absolute;top: 10%;left: 10%;border: 1px solid black;height: 300px;width: 500px;display: none;background: white;opacity: 1;" id="ass_container">
+<div style="position: absolute;top: 10%;left: 10%;border: 1px solid black;height: 300px;width: 500px;display: none;background: white;opacity: 1;color: white" id="ass_container">
 	<!-- form here -->
-		Add File: 
-		<input type="file" id="file" name="file" >
+	<div style="top: 30%;left: 30%;position: relative;">
+		<h2 style="text-shadow: 0px 0px 7px #FF0000;color: white">Add File</h2>
+		<input type="file" id="file" name="file" style="position: relative;left:2%;display: none;" >
+		<label for="file" class="btn btn-primary" style="margin: 1%"><b>Upload File</b></label>
 		<input type="hidden" name="ass_id" id="ass">
 	<br>
-		<input type="Submit" name="" placeholder="Submit">
-		<button onclick="cancel()">cancel</button>
+	<div style="position: relative;left: -6%">
+		<input type="Submit" name="" placeholder="Submit" class="btn btn-primary" style="margin: 2%">
+		<button onclick="cancel()" class="btn btn-primary" style="background-color: red;margin: 2%">cancel</button>
+	</div>
+	</div>
 </div>
 </form>
 </div>
