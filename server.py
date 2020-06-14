@@ -128,10 +128,10 @@ def Classs():
 	username=session['user']['user_id']
 	clg_name=college.getCollegeName(c,session['user']['clg_id'])
 	teachers=getTeachers()
-	if occ=='teacher':
-		return render_template('teacher.html',classes=classes,username=username,teacher=name,clg_name=clg_name)
-	else:
-		return render_template('student.html',classes=classes,username=username,name=name,roll=roll,clg_name=clg_name,teachers=teachers)
+	# if occ=='teacher':
+		# return render_template('teacher.html',classes=classes,username=username,name=name,clg_name=clg_name)
+	# else:
+	return render_template('class.html',occ=occ,classes=classes,username=username,name=name,roll=roll,clg_name=clg_name,teachers=teachers)
 
 @app.route('/check_classavail',methods=["POST"])
 def check_classavail():

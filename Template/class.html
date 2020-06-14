@@ -76,25 +76,42 @@
 			#clginput:focus .clg_ul{
 				visibility: visible;
 			}
-			body {
-  		background-image: url('/static/img/bg6.webp');
-  		background-repeat: no-repeat;
-  		background-attachment: fixed;
-		  background-size: 100% 100%;}
-		  @media screen and (max-width: 950px){
-	.col-4{
-		display: none;
-	}
-	
-	.col-8{
-		margin-left: auto;
-		margin-right: auto;
+			::-webkit-scrollbar {
+		  width: 6px;
+		}
+			::-webkit-scrollbar-track {
+		  background: white;
+		}
 
-	}
-	.totalCount{
-		display: none;
-	}
-}
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		  background: #888;
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		  background: #555;
+		}
+			body {
+	  		background-image: url('/static/img/bg6.webp');
+	  		background-repeat: no-repeat;
+	  		background-attachment: fixed;
+			  background-size: 100% 100%;
+			}
+		  @media screen and (max-width: 950px){
+			.col-4{
+				display: none;
+			}
+			
+			.col-8{
+				margin-left: auto;
+				margin-right: auto;
+
+			}
+			.totalCount{
+				display: none;
+			}
+		}
 	
 	</style>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -121,23 +138,23 @@
 </style>
 
 </head>
-<body>
+<body onload="onload()">
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top" style="font-size: large;">
-			<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom</a>
+			<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom |
+				{% if occ=="teacher" %}
+					Teacher
+				{% else %}
+					Student
+				{% endif %}
+			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			  <span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav" style="font-size: larger;">
 			  <ul class="navbar-nav mr-auto">
 				<li class="nav-item ">
-				  <a class="nav-link" href="#">Home </a>
-				</li>
-				<li class="nav-item">
-				  <!-- <a class="nav-link" href="#">Features</a> -->
-				</li>
-				<li class="nav-item">
-				  <!-- <a class="nav-link" href="#">Pricing</a> -->
+				  <a class="nav-link" href="/Class">Home </a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -176,13 +193,12 @@
 		  </nav>
 
 
-<div class="container">
-	
- <!-- <div id="teacher_name">
-	{{ teacher }}
- </div> -->
- <div class="row">
-<div class="col-4 " style="padding-top: 10px;">
+<div class="container" style="height: 100%">
+
+<div style="width: 100%;height: 10px"></div>
+ 
+<div class="row" >
+<div class="col-4 " >
 	<div class="position-fixed">
 	<div class="card" style="width: 18rem;">
 		<img class="card-img-top" src="/static/img/avatar.svg" style="width:200px;height:200px;margin-left: auto;margin-right: auto;">
@@ -192,21 +208,24 @@
 		  <h5 class="card-title">{{ name }}</h5>
 		  <h6>{{ roll }}</h6>
 		  <h6>{{ clg_name }}</h6>
-		  
-		  <!-- Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
 		</div>
-		<!-- <ul class="list-group list-group-flush"> -->
-		  <!-- <li class="list-group-item">blog-1</li> -->
-		 
-		  <!-- </ul> -->
-		<!-- <div class="card-body">
-		  <a href="#" class="card-link">Update-Profile</a>
-		</div> -->
-
 		<div class="card-body">
 			<form action="/add_class" method="post" class="form">
-				<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Join a New Class" required="True" onkeyup="check_classavail()" autocomplete="off">
+				{% if occ!="teacher" %}
+				<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Join a New Class" required="True" onkeyup="check_classavail('s')" autocomplete="off">
 				<div id="print">
+				</div>
+				<input type="submit" name="" value="Join">
+				{% else %}
+				<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" autocomplete="off" onkeyup="check_classavail('t')">
+				<textarea class="form-control" name="desc" placeholder="Enter class description" id="exampleFormControlTextarea1" rows="3"></textarea>
+				<div id="print">
+				
+				</div>
+				<br>
+				<input type="submit" name="" value="Create">
+				{% endif %}
+				</form>
 				{% with messages = get_flashed_messages() %}
                       {% if messages %}
                         {% for message in messages %}
@@ -216,16 +235,11 @@
                         {% endfor %}
                       {% endif %}
                     {% endwith %}
-				
-				</div>
-				<input type="submit" name="" value="Join">
-				</form>
-		
 		</div>
 	  </div>
 	  </div>
 </div>
-<div class="col-8" style="height: 500px;padding-top: 10px; overflow-y: scroll;">
+<div class="col-8" style=" overflow-y: scroll;height: 575px">
 	<div id="classes"  >
 	{% for class in classes %}
 	<!-- <div class='classes'>
@@ -235,8 +249,10 @@
 		</font>
 		{{ desc }}
 	</div> -->
-	<div class="card">
+	<div class="card" id="scr">
+		{% if occ!="teacher" %}
 		<h5 class="card-header">Instructor : {{ class.creator }}</h5>
+		{% endif %}
 		<div class="card-body" style="border-bottom: 1px; border-color: black">
 		  <h5 class="card-title">
 			<font size="9px">
@@ -246,10 +262,15 @@
 		  </h5>
 		  <p class="card-text">{{ class.desc }}</p>
 		  <a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="btn btn-primary">Go to Classes</a>
-		  <a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary">View Assignment</a>
+		  <a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary">View Assignmnt</a>
   		  <a href="/view_test?cls_id={{ class.cls_id }}" class="btn btn-primary">View Test</a>
-
+  		  {% if occ!="teacher" %}
 		  <button class="btn btn-primary" style="background-color: red;border-color: red" onclick='removeClass("{{ class.cls_id }}")' >Remove Class</button>
+		  {% else %}
+		  <button class="btn btn-primary" onclick='popUp("{{ class.cls_id }}")'>Add Assignment</button>
+		  <a target="_blank" href="/create_test?cls_id={{ class.cls_id }}" class="btn btn-primary">Create Test</a>
+		  <button class="btn btn-primary" style="background-color: red;border-color: red"onclick='deleteClass("{{ class.cls_id }}")' >Delete Class</button>
+		  {% endif %}
 
 		</div>
 		</div>
@@ -260,31 +281,34 @@
 
 </div>
 </div>
+{% if occ=="teacher" %}
+<div style="position: absolute;top: 10%;left: 10%;border: 1px solid whitesmoke;height: 250px;width: 500px;display: none;background: white;opacity: 1;" id="ass_container">
+		<form class="Ass_popup" method="POST" action="/createAss" style="padding: 5px;margin: 5px;">
+			<div class="form-group row">
+			  <input type="hidden" name="cls_id" id="cls_id">
 
-
-<!-- <div id="clginput" class="form-popup" >
-    
-    			<input type="text" class="form-control" placeholder="Search" aria-label="Search" id='in' onkeyup="myFunction()">
-				<ul id="myUL"  class="clg_ul" style="z-index: 11; background:rgba(255,255,255,1) ">
-				 {% for t in teachers %}
-
-				  <li style="text-align: center;margin:2%;">
-				  	<ul>
-				  	{{ t.name }}
-
-				  		{% for cls in t.classes %}
-				  			<li><form action="/add_class" method="post">
-				  			<input type="hidden" name="cls_code" value="{{ cls.cls_id }}">
-				  			<input type="submit" name="" value="{{ cls.cls_id }}">
-				  			</form></li>
-				  		{% endfor %}
-				  	</ul>
-				  </li>
-				 {% endfor %}
-				</ul>
-				<button type="button" class="button-danger" onclick="closeForm('X')">Close</button>
-    	
-	</div>  -->
+			  <label for="Assignment" class="col-sm-2 col-form-label" >Assignment</label>
+			  <div class="col-sm-10">
+				<input name="name" type="text"  class="form-control" id="ass_name" placeholder="Assignment Name"style="margin-left: 10px;">
+			  </div>
+			</div>
+			<div class="form-group row">
+			  <label for="Description" class="col-sm-2 col-form-label">Description</label>
+			  <div class="col-sm-10">
+				<textarea class="form-control" name="desc" id="ass_desc" placeholder="Description"style="margin-left: 10px;"></textarea>
+			  </div>
+			</div>
+			<div class="form-group row">
+				<label for="Deadline" class="col-sm-2 col-form-label">Deadline</label>
+				<div class="col-sm-10">
+				  <input type="date" class="form-control" id="ass_date" placeholder="Date" name="date" style="margin-left: 10px;">
+				</div>
+			  </div>
+			  <button class="btn btn-success">Submit</button>
+				<button class="btn btn-danger" onclick="cancel()" id="cancel_popup()">Cancel</button>
+		  </form>
+</div>
+{% endif %}
 <script type="text/javascript">
 	
 	$(document).ready(function(){
@@ -312,21 +336,19 @@
 	xhttp.open("GET",'/class_list',true)
 	xhttp.send()
 
-	function check_classavail(){
+	function check_classavail(x){
 
-			console.log(listofclasses)
+		  console.log(listofclasses)
 
           g=document.getElementById('cls_code')
           out=document.getElementById('print')
-          console.log(g.value)
+          var display=false
           if (listofclasses.includes(g.value)) {
-          	out.innerHTML='Available'
+          	display=true;
           }
-          else
-          {
-          	out.innerHTML='Not Available'
-          }
-
+          if (x=='t')display=!display;
+          if(display)out.innerHTML='Available'
+          else out.innerHTML=' Not Available'
         }
 
 	function removeClass(cls_id) {
@@ -378,7 +400,46 @@
 			document.getElementById("user_data_clgname").value=clg;
 			document.getElementById("clginput").style.display = "none";
 		}
-	
+{% if occ=="teacher" %}
+function deleteClass(cls_id) {
+ 		console.log(cls_id);
+ 		// things to do 
+ 		data= new FormData()
+	    data.append('cls_id',cls_id)
+	    var xhttp = new XMLHttpRequest();
+
+	    if (!confirm("Do you want to delete this Class"))
+	    	return ;
+
+	    xhttp.onreadystatechange = function() {
+	      if (this.readyState == 4 && this.status == 200) {
+	            alert("Class Deleted");
+	            window.open(window.location.href,"_top");
+	      }
+	    };
+	     xhttp.open("POST","/deleteClass",true)
+	    // xhttp.send("username="+e.value+"&password="+f.value)
+	    xhttp.send(data)
+
+ }
+ function popUp(a){
+  console.log(a)
+  document.getElementById("cls_id").value=a;
+  // console.log(username)
+  // document.getElementById("blur").style.filter="blur(8px)"
+  pop_up=document.getElementById("ass_container").style
+  pop_up.display='block';
+  pop_up.background=" linear-gradient(to left, #006699 0%, #669999 100%)"
+  pop_up.zIndex=2
+  pop_up.filter="drop-shadow(8px 8px 10px gray)"
+  pop_up1=document.getElementById("container").style
+  pop_up1.backgroundColor="rgba(0,0,0,0.4)"
+}
+{% endif %}
+
+function onload() {
+	console.log(window.innerHeight)
+}
 </script>
 </form>
 </div>
