@@ -206,7 +206,9 @@
 		  <!-- <h5 class="card-title">{{ username }}</h5> -->
 		  <p class="card-text">
 		  <h5 class="card-title">{{ name }}</h5>
+		  {% if occ!='teacher' %}
 		  <h6>{{ roll }}</h6>
+		  {% endif %}
 		  <h6>{{ clg_name }}</h6>
 		</div>
 		<div class="card-body">
