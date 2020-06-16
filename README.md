@@ -1,7 +1,7 @@
 # myDigiclass
-*'''Front Page Layout''':
-							*sociallogin
-							*forgotpassword
+* Front Page Layout:
+							* sociallogin
+							* forgotpassword
 
 *Profile Page(Include in all pages)
 
