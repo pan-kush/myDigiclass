@@ -180,16 +180,16 @@
 
 				<!-- Card layout -->
 				<div class="card-body">
-				<h5 class="card-title">
-					<font size="9px">
-						<a href="#">{{ class.cls_id }}</a>
-						<p class="totalCount">
-							<font size="4px">Total Students : </font>
-							<span class="num">{{ class.participants }}</span>
-						</p>
-						<!-- <br> -->
-					</font>
-				</h5>
+					<div class="card-title">
+						<font size="9px">
+							<a href="#">{{ class.cls_id }}</a>
+							<p class="totalCount">
+								<font size="4px">Total Students : </font>
+								<span class="num">{{ class.participants }}</span>
+							</p>
+							<!-- <br> -->
+						</font>
+					</div>
 				<p class="card-text">{{ class.desc }}</p>
 				<a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="btn btn-primary btn-custom">Go to Classes</a>
 
