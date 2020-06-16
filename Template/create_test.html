@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MY Classroom - Create Test</title>
+	<style type="text/css">
+	* {
+		/* border: 1px solid #fff; */
+	}
+	.test-info{
+		text-align: center;
+		padding: 30px;
+	}
+
+	.test-info input{
+		margin: 0px 20px 0px 20px;
+		max-width: 32%;
+	}
+	.classes{
+		border: 1px solid black; 
+		background: #d1d0cd;
+		width: 30%;
+		height: 100px;
+		margin-bottom: 3%;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+	}
+
+	.test-content {
+		margin: 1em 0 1em 0;
+		text-align: center;
+		padding: 40px;
+	}
+
+	.test-content textarea {
+		margin: 1em 0 1em 0 1em;
+	}
+	.test-content input, textarea {
+		margin: 10px 0 10px 0 ;
+		width: 100%;
+	}
+
+	.test-options {
+		text-align: center;
+	}
+
+	.correct {
+		width: 100%;
+		margin-top: 8px;
+		color:limegreen;
+		padding: 5px;
+	}
+
+	#optionss, .opt {
+		width: 100%;
+		padding:5px;
+		margin-top: 8px;
+	}
+
+	.test-paper {
+		/* margin: 5px; */
+		background-color: #c3c3c3;
+		/* margin: 10px; */
+		padding: 10px;
+		padding-top: 12px;
+		border-radius: 5px;
+	}
+
+	.test-paper h3 {
+		font-size: 20px;
+		font-family: serif;
+	}
+
+	#quests {
+		font-size: 14px;
+		font-family: serif;
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	.custom-btn {
+		max-width: 49%;
+		margin: 10px 5px 10px 5px;
+		background-color: #2F5D8E;
+		border: 1px solid #F0E9D1;
+		border-radius: 4px;
+	}
+
+	.custom-btn:hover {
+		background-color: #F0E9D1;
+		color: #2F5D8E;
+	}
+
+	body {
+  		background-image: url('/static/img/bg6.webp');
+  		background-repeat: no-repeat;
+  		background-attachment: fixed;
+  		background-size: 100% 100%;
+	}
+
+	
+	</style>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+	<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</head>
+
+
+
+<body  > 
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: large;">
+		<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav" style="font-size: larger;">
+		  	<ul class="navbar-nav mr-auto">
+				<li class="nav-item ">
+				<a class="nav-link" href="/Class">Home </a>
+				</li>
+				<li class="nav-item">
+				<!-- <a class="nav-link" href="#">Features</a> -->
+				</li>
+				<li class="nav-item">
+				<!-- <a class="nav-link" href="#">Pricing</a> -->
+				</li>
+			
+          	</ul>
+        	<font color="white">{{ teacher }}</font>
+			<ul class="navbar-nav " style="margin-right: 100px;">
+				<li class="nav-item">
+					<a class="nav-link" href="/logout"> Logout</a>
+				</li>  
+			</ul>
+		</div>
+      </nav>
+
+	<div class="container">
+
+		<div class="row">
+			<div class="col-lg-12 col-md-12 test-info">
+				<input type="text" name="" id="test_name" placeholder="Test Name">
+				<input type="text" name="" id="test_desc" placeholder="Test Description">
+				<input type="text" name="" id="test_time" placeholder="Test Time(Minutes)">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-5 col-md-5 col-sm-5 test-options">
+				<button class="btn btn-primary custom-btn" onclick="add_opts()">Add Options</button>
+				<button class="btn btn-primary custom-btn" onclick="submit()">Add Question</button>
+				<br>
+				<div id="write_qu">
+					<textarea name="" placeholder="Write Your Question" id="q"></textarea>	
+					<br>
+					<div id="optionss"></div>	
+				</div>
+				<input class="correct"type="text" name="" id="ans" placeholder="Correct Answer">
+			
+				<button class = "btn btn-primary custom-btn"onclick="final_sub()">Set Question Paper</button>
+			</div>
+
+			<div class="col-lg-7 col-md-7 col-sm-7 test-paper">
+				<h3>Your questions will appear here.</h3>
+				<hr>
+				<font size="4px" id="quests">
+					
+				</font>
+				
+				
+			
+			</div>
+
+			
+
+		</div>
+	</div>
+
+	
+
+	<!-- <button onclick="questions()">Add Questions</button> -->
+	
+	
+
+</body>
+<script type="text/javascript">
+	
+	ls={}
+	var ques_count=0
+	var cls_id='{{ cls_id }}'
+
+	function add_opts(){
+
+
+		v = document.createElement("input");
+		v.type="text"
+		v.setAttribute("class","opt")
+		document.getElementById("optionss").appendChild(v)
+		b=document.createElement("br");
+		document.getElementById("optionss").appendChild(b)
+
+	}
+
+	function submit(){
+
+
+		
+
+
+		o=document.getElementsByClassName("opt")
+		if(o.length<=1){
+			return
+		}
+		ques_count++
+
+		d={}
+		d['ques']=document.getElementById("q").value
+		k=document.getElementById("quests")
+		k.innerHTML+=ques_count+" "+"<b>"+d['ques']+"</b>"+"<br>"
+		d['opts']=[]
+		s="<ul>"
+		for(i=0;i<o.length;i++){
+			d['opts'].push(o[i].value)
+			s+=`
+			<li>
+				${o[i].value}
+			</li>
+			`
+		}
+		s+="</ul>"
+		k.innerHTML+=s
+		document.getElementById("optionss").innerHTML=""
+		ans=document.getElementById("ans").value
+		d['ans']=ans
+		ls['q'+ques_count]=d
+		k.innerHTML+="<br>"
+		console.log(ls,d)
+		document.getElementById("q").value=""
+		document.getElementById("ans").value=""
+
+
+
+	}
+
+	function final_sub(){
+
+
+		console.log(ls.length)
+		if (!ls['q1']){
+			return
+}
+
+		
+      var xhttp = new XMLHttpRequest();
+
+	    xhttp.onreadystatechange = function() {
+	      if (this.readyState == 4 && this.status == 200) {
+
+	          console.log(this.responseText);
+	          // g=document.getElementById('print')
+	          // g.innerHTML=this.responseText
+	          alert("Your Question Paper is Uploaded")
+	          window.close()
+	      }
+	    };
+
+	    ls['cls_id']=cls_id
+
+	    ls['test_name']=document.getElementById("test_name").value
+	    ls['test_time']=document.getElementById("test_time").value
+	    ls['test_desc']=document.getElementById("test_desc").value
+
+		
+
+	    var data = JSON.stringify(ls);
+	    xhttp.open("POST","/set_paper",true)
+			// console.log(""+e.value)
+	    // xhttp.send("username="+e.value+"&password="+f.value)
+   	    xhttp.setRequestHeader("Content-Type", "application/json");
+
+	    xhttp.send(data)
+	}
+
+</script>
+</html>

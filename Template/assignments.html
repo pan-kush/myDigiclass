@@ -135,6 +135,7 @@
 
               {% endif %}
 		  {% else %}
+	   <button class="btn btn-primary" onclick='editpopUp("{{ ass.ass_id }}")'>Edit Assignment</button>
 		  <button class="btn btn-primary" style="background-color: red;border-color: red" onclick='removeAss("{{ ass.ass_id }}")' >Delete Assignment</button>
 		  {% endif %}
 		  <a class="btn btn-primary" href="/submissions?ass_id={{ ass.ass_id }}">Submission Log</a>
@@ -170,16 +171,58 @@
                       {% endif %}
                     {% endwith %}
 <form method="post" action='/submitAss' enctype="multipart/form-data">
-<div style="position: absolute;top: 10%;left: 10%;border: 1px solid black;height: 300px;width: 500px;display: none;background: white;opacity: 1;" id="ass_container">
+<div style="position: absolute;top: 10%;left: 10%;border: 1px solid black;height: 300px;width: 500px;display: none;background: white;opacity: 1;color: white" id="ass_container">
 	<!-- form here -->
-		Add File: 
-		<input type="file" id="file" name="file" >
+	<div style="top: 30%;left: 30%;position: relative;">
+		<h2 style="text-shadow: 0px 0px 7px #FF0000;color: white">Add File</h2>
+		<input type="file" id="file" name="file" style="position: relative;left:2%;display: none;" >
+		<label for="file" class="btn btn-primary" style="margin: 1%"><b>Upload File</b></label>
 		<input type="hidden" name="ass_id" id="ass">
 	<br>
-		<input type="Submit" name="" placeholder="Submit">
-		<button onclick="cancel()">cancel</button>
+	<div style="position: relative;left: -6%">
+		<input type="Submit" name="" placeholder="Submit" class="btn btn-primary" style="margin: 2%">
+		<button onclick="cancel()" class="btn btn-primary" style="background-color: red;margin: 2%">cancel</button>
+	</div>
+	</div>
 </div>
 </form>
+</div>
+<div style="position: absolute;top: 10%;left: 10%;border: 1px solid whitesmoke;height: 250px;width: 500px;display: none;background: white;opacity: 1;" id="edit_ass_container">
+	<!-- form here -->
+	<!-- Assignment:
+		<input type="text" id="ass_name" placeholder="name">
+		<br>
+	Description:
+		<input type="text" id="ass_desc" placeholder="description">
+		<br>
+	Deadline:
+		<input type="date" id='ass_date' placeholder="deadline">
+	<br>
+		<button onclick="createAss()">submit</button>
+		<button onclick="cancel()">cancel</button> -->
+		<form  action="/updateAss" method="post" class="Ass_popup" style="padding: 5px;margin: 5px;" id="forms">
+			<div class="form-group row">
+			  <label for="Assignment" class="col-sm-2 col-form-label" >Assignment</label>
+			  <div class="col-sm-10">
+				<input type="text"  class="form-control" name="ass_name" placeholder="Assignment Name"style="margin-left: 10px;">
+			  </div>
+			</div>
+			<div class="form-group row">
+			  <label for="Description" class="col-sm-2 col-form-label">Description</label>
+			  <div class="col-sm-10">
+				<textarea class="form-control" name="ass_desc" placeholder="Description"style="margin-left: 10px;"></textarea>
+			  </div>
+			</div>
+			<div class="form-group row">
+				<label for="Deadline" class="col-sm-2 col-form-label">Deadline</label>
+				<div class="col-sm-10">
+				  <input type="date" class="form-control" name="ass_date" placeholder="Date" style="margin-left: 10px;">
+				</div>
+			  </div>
+			  <button class="btn btn-success" onclick="updateAss()">Submit</button>
+				<button id="cancel" class="btn btn-danger" onclick="cancell()">Cancel</button>
+				<input type="hidden" name="ass_id" id="asss_id">
+		  </form>
 </div>
 <!-- <form action="/add_class" method="post" class="form">
 <input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" onkeyup="check_avl3()">
@@ -189,6 +232,13 @@
 </div>
 <input type="submit" name=""> -->
 <script type="text/javascript" >
+
+
+	document.getElementById("cancel").addEventListener("click", function(event)
+	{
+	event.preventDefault()
+	}); 
+
 	function removeAss(ass_id) {
  		console.log(ass_id);
  		// things to do 
@@ -243,6 +293,57 @@ function cancel() {
   document.getElementById("ass_container").style.display='none'
   ass_id=''
 }
+
+function cancell() {
+  // body...
+  document.getElementById("edit_ass_container").style.display='none'
+  ass_id=''
+}
+
+
+function editpopUp(a){
+
+
+  console.log(a)
+  ass_id=a
+  document.getElementById("asss_id").value=ass_id
+  // document.getElementById("blur").style.filter="blur(8px)"
+  pop_up=document.getElementById("edit_ass_container").style
+  pop_up.display='block';
+  pop_up.background=" linear-gradient(to left, #006699 0%, #669999 100%)"
+  pop_up.zIndex=2
+  pop_up.filter="drop-shadow(8px 8px 10px gray)"
+
+  // pop_up1=document.getElementById("container").style
+  // pop_up1.backgroundColor="rgba(0,0,0,0.4)"
+}
+
+
+// function updateAss(){
+//   data = new FormData();
+//   data.append('ass_id',ass_id);
+//   data.append('name',document.getElementById('ass_name').value);
+//   data.append('desc',document.getElementById('ass_desc').value);
+//   data.append('date',document.getElementById('ass_date').value);
+//   // data.append('password',f.value)
+//   console.log(ass_id)
+//   var xhttp = new XMLHttpRequest();
+
+//   xhttp.onreadystatechange = function() {
+//     if (this.readyState == 4 && this.status == 200) {
+
+//         console.log(this.responseText);
+//         document.getElementById("ass_container").style.display='none'
+//         // some miracle here
+//         window.open(window.location.href,'_top')
+//     }
+//   };
+
+//   xhttp.open("POST","/updateAss",true)
+//   // console.log(""+e.value)
+//   // xhttp.send("username="+e.value+"&password="+f.value)
+//   xhttp.send(data);
+// }
 
 </script>
 </form>

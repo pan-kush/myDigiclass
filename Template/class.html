@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MY Classroom | 
+		{% if occ=="teacher" %}
+		Teacher
+	{% else %}
+		Student
+	{% endif %}</title>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+	<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../static/css/view.css">
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
+</head>
+<body onload="onload()">
+
+	<div class="navbar-home">
+		<a class="navbar-brand" href="#" style="font-size:x-large;"><img src="../static/icons/logo.png" alt="" height="50px" > | &nbsp;
+			{% if occ=="teacher" %}
+				Teacher
+			{% else %}
+				Student
+			{% endif %}
+		</a>
+	</div>
+
+	<nav class="navbar navbar-dark side-menu">
+		
+		<div class="profile">
+			<div class="icon">
+				<img src="../static/img/avatar.svg" alt="">
+			</div>
+		</div>
+
+		<ul>
+			<li><i class="fa fa-sign-out icon"></i></li>
+			<li>Menu2</li>
+			<li>Menu3</li>
+		</ul>
+		<div class="logout">
+			<a href="/logout"><i class="fa fa-sign-out icon-logout"><span class="menu-text">LogOut</span></i></a>
+		</div>
+	</nav>
+
+		<!-- <nav class="navbar navbar-dark bg-dark navbar-static-top" style="font-size: large;">
+			<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom |
+				{% if occ=="teacher" %}
+					Teacher
+				{% else %}
+					Student
+				{% endif %}
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav" style="font-size: larger;">
+			  <ul class="navbar-nav mr-auto">
+				<li class="nav-item ">
+				  <a class="nav-link" href="/Class">Home </a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  Teachers
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						{% for t in teachers %}
+						<li class="dropdown-submenu">
+        				<a class="test dropdown-item" tabindex="-1" href="#">{{ t.name }}<span class="caret"></span></a>
+        					<ul class="dropdown-menu">
+							{% for cls in t.classes %}
+								<li>
+								<form action="/add_class" method="post">
+									<input type="hidden" type="text" name="cls_code"  onkeyup="check_classavail()" value="{{ cls.cls_id }}">
+									<input type="submit" name="" class="dropdown-item" value="{{ cls.cls_id }}">
+								</form>
+								</li>
+							{% endfor %}
+							</ul>
+						</li>
+						{% endfor %}
+					</ul>
+				  </li>
+				 
+				
+			  </ul>
+			  <font color="white">{{ name }}</font>
+			  <ul class="navbar-nav " style="margin-right: 100px;">
+				<li class="nav-item">
+					<a class="nav-link" href="/logout"> Logout</a>
+				</li>
+			   
+			</ul>
+			</div>
+		  </nav> -->
+
+
+<div class="container-fluid content">
+	<!-- <div class="row" >
+		<div class="col-4 " > -->
+			<!-- <div class="position-fixed">
+			<div class="card" style="width: 18rem;">
+				<img class="card-img-top" src="/static/img/avatar.svg" style="width:200px;height:200px;margin-left: auto;margin-right: auto;">
+				<div class="card-body">
+				<p class="card-text">
+				<h5 class="card-title">{{ name }}</h5>
+				<h6>{{ roll }}</h6>
+				<h6>{{ clg_name }}</h6>
+				</div>
+				<div class="card-body">
+					<form action="/add_class" method="post" class="form">
+						{% if occ!="teacher" %}
+						<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Join a New Class" required="True" onkeyup="check_classavail('s')" autocomplete="off">
+						<div id="print">
+						</div>
+						<input type="submit" name="" value="Join">
+						{% else %}
+						<input class="input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" autocomplete="off" onkeyup="check_classavail('t')">
+						<textarea class="form-control" name="desc" placeholder="Enter class description" id="exampleFormControlTextarea1" rows="3"></textarea>
+						<div id="print">
+						
+						</div>
+						<br>
+						<input type="submit" name="" value="Create">
+						{% endif %}
+						</form>
+						{% with messages = get_flashed_messages() %}
+							{% if messages %}
+								{% for message in messages %}
+								<script type="text/javascript">
+								alert("{{ message }}");
+								</script>
+								{% endfor %}
+							{% endif %}
+							{% endwith %}
+				</div>
+			</div>
+			</div> -->
+		<!-- </div> -->
+		<!-- <div class="col-8"> -->
+			<div class="title">
+				<h2 class="title-text">your registered classes</h2>
+			</div>
+			<hr class="ruler">
+			<div class="classes"  >
+				
+			{% for class in classes %}
+			<div class="card class-view" id="scr">
+				
+				{% if occ!="teacher" %}
+				<h5 class="card-header">Instructor : {{ class.creator }}</h5>
+				{% endif %}
+
+				<!-- The plus sign -->
+				{% if occ=="teacher"%}
+				<div class="create">
+					<div class="create-list">
+						<button class="btn btn-custom-create" onclick='popUp("{{ class.cls_id }}")'>Add Assignment</button>
+						<a target="_blank" href="/create_test?cls_id={{ class.cls_id }}" class="btn btn-custom-create">Create Test</a>
+					</div>
+					<div class="icon-create">
+						<img src="../static/icons/add.png" alt="">
+					</div>
+				</div>
+				{% endif %}
+
+				<!-- Card layout -->
+				<div class="card-body">
+				<h5 class="card-title">
+					<font size="9px">
+						<a href="#">{{ class.cls_id }}</a>
+						<p class="totalCount">
+							<font size="4px">Total Students : </font>
+							<span class="num">{{ class.participants }}</span>
+						</p>
+						<!-- <br> -->
+					</font>
+				</h5>
+				<p class="card-text">{{ class.desc }}</p>
+				<a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="btn btn-primary btn-custom">Go to Classes</a>
+
+				<a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary btn-custom">View Assignment</a>
+
+				<a href="/view_test?cls_id={{ class.cls_id }}" class="btn btn-primary btn-custom">View Test</a>
+				
+				{% if occ!="teacher" %}
+				<button class="btn remove-btn btn-custom" onclick='removeClass("{{ class.cls_id }}")' >Remove Class</button>
+				{% else %}
+				
+				<button class="btn remove-btn btn-custom"onclick='deleteClass("{{ class.cls_id }}")' >Delete Class</button>
+				{% endif %}
+
+				</div>
+			</div>
+			
+			{% endfor %}
+			<!-- Extra card for creating or joining a new class -->
+			<div class="card class-view join-class" id="scr">
+				<div class="card-body">
+					<form action="/add_class" method="post">
+						
+						<!-- Student -->
+						{% if occ!="teacher" %}
+						<input class="card-input" type="text" name="cls_code" id="cls_code" placeholder="Join a New Class" required="True" onkeyup="check_classavail('s')" autocomplete="off">
+						<div id="print">
+
+						</div>
+						<input type="submit" name="" value="Join this class" class="btn btn-primary create-card-btn">
+
+						<!-- Teacher -->
+						{% else %}
+						<input class="card-input" type="text" name="cls_code" id="cls_code" placeholder="Add a New Class" required="True" autocomplete="off" onkeyup="check_classavail('t')">
+						<textarea class="card-input" name="desc" placeholder="Enter class description" id="exampleFormControlTextarea1" rows="3"></textarea>
+						
+						<div id="print">
+						
+						</div>
+						<br>
+						<input type="submit" name="" value="Create this class" class=" btn btn-primary create-card-btn">
+						{% endif %}
+						</form>
+
+						{% with messages = get_flashed_messages() %}
+							{% if messages %}
+								{% for message in messages %}
+								<script type="text/javascript">
+								alert("{{ message }}");
+								</script>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+				</div>
+			</div>
+			
+		<!-- </div> -->
+	<!-- </div> -->
+</div>
+
+<!-- Assignment popup -->
+	{% if occ=="teacher" %}
+	<div style="position: absolute;top: 10%;left: 10%;border: 1px solid whitesmoke;height: 250px;width: 500px;display: none;background: white;opacity: 1;" id="ass_container">
+			<form class="Ass_popup" method="POST" action="/createAss" style="padding: 5px;margin: 5px;">
+				<div class="form-group row">
+				<input type="hidden" name="cls_id" id="cls_id">
+
+				<label for="Assignment" class="col-sm-2 col-form-label" >Assignment</label>
+				<div class="col-sm-10">
+					<input name="name" type="text"  class="form-control" id="ass_name" placeholder="Assignment Name"style="margin-left: 10px;">
+				</div>
+				</div>
+				<div class="form-group row">
+				<label for="Description" class="col-sm-2 col-form-label">Description</label>
+				<div class="col-sm-10">
+					<textarea class="form-control" name="desc" id="ass_desc" placeholder="Description"style="margin-left: 10px;"></textarea>
+				</div>
+				</div>
+				<div class="form-group row">
+					<label for="Deadline" class="col-sm-2 col-form-label">Deadline</label>
+					<div class="col-sm-10">
+					<input type="date" class="form-control" id="ass_date" placeholder="Date" name="date" style="margin-left: 10px;">
+					</div>
+				</div>
+				<button class="btn btn-success">Submit</button>
+					<button class="btn btn-danger" onclick="cancel()" id="cancel_popup()">Cancel</button>
+			</form>
+	</div>
+	{% endif %}
+
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+	  $('.dropdown-submenu a.test').on("click", function(e){
+	    $(this).next('ul').toggle();
+	    e.stopPropagation();
+	    e.preventDefault();
+	  });
+	});	
+
+	var xhttp = new XMLHttpRequest();
+
+	listofclasses=[]
+
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+    	listofclasses=this.responseText.split("<sep>")
+    	console.log(listofclasses)
+
+
+    }
+    }	
+
+	xhttp.open("GET",'/class_list',true)
+	xhttp.send()
+
+	function check_classavail(x){
+
+		  console.log(listofclasses)
+
+          g=document.getElementById('cls_code')
+          out=document.getElementById('print')
+          var display=false
+          if (listofclasses.includes(g.value)) {
+          	display=true;
+          }
+          if (x=='t')display=!display;
+          if(display)out.innerHTML='Available'
+          else out.innerHTML=' Not Available'
+        }
+
+	function removeClass(cls_id) {
+ 			console.log(cls_id);
+	 		// things to do 
+	 		data= new FormData()
+		    data.append('cls_id',cls_id)
+		    var xhttp = new XMLHttpRequest();
+
+		    if (!confirm("Do you want to remove this Class"))
+		    	return ;
+
+		    xhttp.onreadystatechange = function() {
+		      if (this.readyState == 4 && this.status == 200) {
+		            alert("Class Deleted");
+		            window.open(window.location.href,"_top");
+		      }
+		    };
+		     xhttp.open("POST","/removeClass",true)
+		    // xhttp.send("username="+e.value+"&password="+f.value)
+		    xhttp.send(data)
+
+ 		}
+
+ 		function myFunction() {
+		  // Declare variables
+		  var input, filter, ul, li, a, i, txtValue;
+		  input = document.getElementById('in');
+		  filter = input.value.toUpperCase();
+		  ul = document.getElementById("myUL");
+		  li = ul.getElementsByTagName('ul');
+
+		  // Loop through all list items, and hide those who don't match the search query
+		  for (i = 0; i < li.length; i++) {
+		    // a = li[i].getElementsByTagName("a")[0];
+		    // txtValue = a.textContent || a.innerText;
+		    txtValue = li[i].innerHTML
+		    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+		      li[i].style.display = "";
+		    } else {
+		      li[i].style.display = "none";
+		    }
+		  }
+		}
+
+		function closeForm(clg){
+			ele1=document.getElementById("user_reg").style
+			ele1.opacity=1
+			document.getElementById("user_data_clgname").value=clg;
+			document.getElementById("clginput").style.display = "none";
+		}
+{% if occ=="teacher" %}
+function deleteClass(cls_id) {
+ 		console.log(cls_id);
+ 		// things to do 
+ 		data= new FormData()
+	    data.append('cls_id',cls_id)
+	    var xhttp = new XMLHttpRequest();
+
+	    if (!confirm("Do you want to delete this Class"))
+	    	return ;
+
+	    xhttp.onreadystatechange = function() {
+	      if (this.readyState == 4 && this.status == 200) {
+	            alert("Class Deleted");
+	            window.open(window.location.href,"_top");
+	      }
+	    };
+	     xhttp.open("POST","/deleteClass",true)
+	    // xhttp.send("username="+e.value+"&password="+f.value)
+	    xhttp.send(data)
+
+ }
+ function popUp(a){
+  console.log(a)
+  document.getElementById("cls_id").value=a;
+  // console.log(username)
+  // document.getElementById("blur").style.filter="blur(8px)"
+  pop_up=document.getElementById("ass_container").style
+  pop_up.display='block';
+  pop_up.background=" linear-gradient(to left, #006699 0%, #669999 100%)"
+  pop_up.zIndex=2
+  pop_up.filter="drop-shadow(8px 8px 10px gray)"
+  pop_up1=document.getElementById("container").style
+  pop_up1.backgroundColor="rgba(0,0,0,0.4)"
+}
+{% endif %}
+
+function onload() {
+	console.log(window.innerHeight)
+}
+</script>
+</form>
+</div>
+</body>
+</html>

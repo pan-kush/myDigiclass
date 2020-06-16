@@ -18,7 +18,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top" style="font-size: large;">
-		<a class="navbar-brand" href="#" style="font-size:x-large;">WELCOME TO DIGITAL CLASSES</a>
+		<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
@@ -28,10 +28,10 @@
 			  <a class="nav-link" href="#">Home </a>
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">Features</a>
+			  <!-- <a class="nav-link" href="#">Features</a> -->
 			</li>
 			<li class="nav-item">
-			  <a class="nav-link" href="#">Pricing</a>
+			  <!-- <a class="nav-link" href="#">Pricing</a> -->
 			</li>
 			
 		  </ul>
@@ -49,16 +49,15 @@
  
  <div class="card text-center">
 	<div class="card-header">
-		Assignment 
+		Marksheet
 	</div>
 	<div class="card-body">
-	  <h5 class="card-title">Name : {{ ass.ass_name}}</h5>
-	  <h5 class="card-title">ID : {{ ass.ass_id}}</h5>
-	  <p class="card-text">Here You have to provide all the Assignment details in brief</p>
-	  <a href="#" class="btn btn-primary">View All Assignments</a>
+	  <h5 class="card-title">Name : {{ d.test_name}}</h5>
+	  <p class="card-text">{{ d.test_desc }}</p>
+	  <a href="{{ url_for('view_test',cls_id=cls_id) }}" class="btn btn-primary">View All Tests</a>
 	</div>
 	<div class="card-footer text-muted">
-		deadline: {{ ass.deadline }}
+		Duration: {{ d.test_time }}
 	</div>
   </div>
 </div>
@@ -83,32 +82,17 @@
 		<th scope="col">#</th>
 		<th scope="col">Name</th>
 		<th scope="col">ROll NUMBER</th>
-		<th scope="col">STATUS</th>
-		<th scope="col">DOWNLOAD</th>
-		<th scope="col">DELETE</th>
+		<th scope="col">MARKS</th>
 	  </tr>
 	</thead>
 	<tbody>
-		{% for s in submissions %}
+		{% for mark in marks %}
 	  <tr>
 		<th scope="row">#</th>
-		<td> {{ s.name }}</td>
-		<td>{{ s.roll }}</td>
-		<td>{{ s.status }}</td>
+		<td> {{ mark.name }}</td>
+		<td>{{ mark.roll }}</td>
+		<td>{{ mark.marks }}</td>
 	
-		<td>{% if occ=='teacher' %}
-			<a href="/retrieve_file?file_name={{ s.file }}">{{ s.file }}</a>
-			{% endif %}
-		</td>
-		<td>
-			{% if occ=='teacher' %}
-			<form action="/deluserAss" method="post">
-				<input type="hidden" name="ass_id" value="{{ ass.ass_id }}">
-				<input type="hidden" name="user_id" value="{{ s.user_id }}">
-				<input type="submit" name="" value="Delete">
-			</form>
-			{% endif %}
-		</td>
 		{% endfor %} 
 	  
 	</tbody>
@@ -116,7 +100,7 @@
   </div>
   
 {% if occ=='teacher' %}
-<button class="btn btn-success" style="margin-left: 45%;" href="/retrieve_file?file_name={{ ass.ass_id }}.xlsx">Download The Data</button>
+<a class="btn btn-success" style="margin-left: 45%;" href="/retrieve_file?file_name={{ test_id }}.xlsx">Download The Data</a>
 <h2></h2>
 {% endif %}
 </body>

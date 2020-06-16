@@ -17,6 +17,7 @@ from Data_Models.Class import *
 from Data_Models.Assignment import *
 from Data_Models.Chat import *
 from Data_Models.Announcements import *
+from Data_Models.Test import *
 
 import re,platform
 
@@ -38,9 +39,9 @@ app.config['PERMANENT_SESSION_LIFETIME']=timedelta(minutes=150)
 socketio=SocketIO(app)
 
 #printdb
-for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements']:
+for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements','test','urtest','clrtest']:
 	c.execute("select * from "+i)
-	# print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
+	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
 
 def check_session():
 	if 'user' in session:
@@ -127,10 +128,10 @@ def Classs():
 	username=session['user']['user_id']
 	clg_name=college.getCollegeName(c,session['user']['clg_id'])
 	teachers=getTeachers()
-	if occ=='teacher':
-		return render_template('teacher.html',classes=classes,username=username,teacher=name,clg_name=clg_name)
-	else:
-		return render_template('student.html',classes=classes,username=username,name=name,roll=roll,clg_name=clg_name,teachers=teachers)
+	# if occ=='teacher':
+		# return render_template('teacher.html',classes=classes,username=username,name=name,clg_name=clg_name)
+	# else:
+	return render_template('class.html',occ=occ,classes=classes,username=username,name=name,roll=roll,clg_name=clg_name,teachers=teachers)
 
 @app.route('/check_classavail',methods=["POST"])
 def check_classavail():
@@ -192,7 +193,6 @@ def removeClass():
 	conn.commit()
 	return redirect('/Class')
 
-
 @app.route('/createAss',methods=["POST"])
 def createAss():
 	if not check_session(): return redirect(url_for('login'))
@@ -207,6 +207,7 @@ def createAss():
 	a.add(c)
 	conn.commit()
 	return redirect('/Class')
+
 
 @app.route('/viewAss')
 def viewAss():
@@ -244,6 +245,21 @@ def submitAss():
 		flash("Assignment Submitted")
 	# return url_for('send',data="",file=file_name)
 	return redirect(url_for("viewAss",cls_id=ass_id.split("_")[-2]))
+
+@app.route('/updateAss',methods=["POST"])
+def updateAss():
+
+	if not check_session(): return redirect(url_for('login'))
+	ass_id=request.form.get("ass_id")
+	ass_name=request.form.get("ass_name")
+	ass_desc=request.form.get("ass_desc")
+	ass_date=request.form.get("ass_date")
+	a=assignment.editAss(c,ass_id,ass_name,ass_date,ass_desc)
+	cls_id=ass_id.split("_")[1]
+	conn.commit()
+	return redirect('/viewAss?cls_id='+cls_id)
+
+
 
 @app.route('/submissions')
 def submissions():
@@ -406,7 +422,108 @@ def downloaddb():
 	else:
 		return "You don't have Permission"
 
+@app.route('/create_test',methods=['GET'])
+def create_test():
+
+	if not check_session(): return redirect(url_for('login'))
+
+	cls_id=request.args.get("cls_id")
+	return render_template("create_test.html",cls_id=cls_id)
+
+
+@app.route('/set_paper',methods=['POST'])
+def set_paper():
+
+	if not check_session(): return redirect(url_for('login'))
+
+	ques_set=request.get_json()
+	# print(ques_set)
+	test_name=ques_set['test_name']
+	test_desc=ques_set['test_desc']
+	test_time=ques_set['test_time']
+	del(ques_set['test_name'])
+	del(ques_set['test_desc'])
+	del(ques_set['test_time'])
+	cls_id=ques_set['cls_id']
+	del(ques_set['cls_id'])
+
+	qlist=[]
+	opts=[]
+	ans=[]
+	for i in ques_set:
+		print(ques_set[i])
+		qlist.append(ques_set[i]['ques'])
+		opts.append(ques_set[i]['opts'])
+		ans.append(ques_set[i]['ans'])
+	cls_id=session['user']['clg_id']+'_'+cls_id
+	test_id=cls_id+"_"+str(time.time())
+	t=test(cls_id,test_id,qlist,opts,ans)
+	t.add(c)
+	t.addtoclrtest(c,cls_id,test_id,test_name,test_desc,test_time)
+	conn.commit()
+	return "ok"
+		
+
+@app.route('/view_test',methods=['GET'])
+def view_test():
+
+	if not check_session(): return redirect(url_for('login'))
+
+	cls_id=request.args.get("cls_id")
+	user_id=session['user']['user_id']
+	clg_id=session['user']['clg_id']
+	tests=test.getTests(c,clg_id+"_"+cls_id,user_id)
+	print(clg_id+'_'+cls_id)
+	teacher,desc=Class.getteacher_desc(c,clg_id+'_'+cls_id)
+	# u_name=session['user']['name']
+
+	return render_template("view_test.html",cls_id=cls_id,tests=tests,
+							username=session['user']['user_id'],clg_id=clg_id,
+							teacher=teacher,occ=session['user']['occ'],name=session['user']['name'],
+							desc=desc)
+	
+@app.route('/take_test',methods=["GET"])
+def take_test():
+
+
+	test_id=request.args.get("test_id")
+	cls_id=test_id.split("_")[1]
+	user_id=session['user']['user_id']
+	status=test.test_validation(c,user_id,test_id)
+	if status:
+		return redirect(url_for('Classs'))
+
+	ques,ques_count=test.getQuests(c,test_id)
+	details=test.getDetails(c,test_id)
+	return render_template("testroom.html",quests=ques,d=details,ques_count=ques_count)
+
+@app.route('/grademe',methods=["POST"])
+def grademe():
+
+	ques_count=int(request.form.get("ques_count"))
+	test_id=request.form.get("test_id")
+	cls_id=test_id.split("_")[1]
+	user_id=session['user']['user_id']
+	ans=[]
+	for i in range(ques_count):
+		ans.append(request.form.get(str(i)))
+	m=test.getMarks(c,test_id,ans)
+	mar=str(m)+'/'+str(ques_count)
+	test.addUserMarks(c,m,user_id,test_id)
+	conn.commit()
+	print(mar)
+	return redirect(url_for('view_test',cls_id=cls_id))
+
+@app.route('/marksheet',methods=["GET"])
+def marksheet():
+	test_id=request.args.get("test_id")
+	marks=test.getAllResults(c,test_id)
+	cls_id=test_id.split("_")[1]
+	details=test.getDetails(c,test_id)
+	return render_template("marksheet.html",marks=marks,d=details,occ=session['user']['occ'],cls_id=cls_id,test_id=test_id)
+
+
 
 # app.run(debug=True)
 if __name__ == '__main__':
-	socketio.run(app,debug=False)
+	socketio.run(app,debug=True)

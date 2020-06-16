@@ -7,6 +7,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 	<title>Class-{{ cls.cls_id }}</title>
+	
 	<style type="text/css">
 	
 		.time{
@@ -189,7 +190,7 @@
 	</style>
 </head>
 
-<body onload="scroll()">
+<body onload="scroll()" onresize="res()">
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top" style="font-size: large;">
 		<a class="navbar-brand" href="#" style="font-size:x-large;">MY CLASSROOM</a>
@@ -218,10 +219,12 @@
 		</ul>
 		</div>
 	  </nav>
+	  {% if occ!='teacher' %}
 
-	  <div class="teach" style="background-color: #f0f5f5;margin-left: 10px;padding-left: 40px;">
-		<h3>Teacher name :{{ cls.creator }}</h3>
-		<h5>Class code : {{ cls.cls_id }}</h5>
+	  <div class="teach" style="background-color: #f0f5f5;margin-left: 10px;padding-left: 40px;padding-bottom: 1%">
+		<h3>Teacher: {{ cls.creator }}</h3>
+		<h5>Class: {{ cls.cls_id }}</h5>
+	  {% endif %}
 	</div>
 	 
 		<!-- <h5 class="card-header">Class-{{ cls.cls_id }}</h5>
@@ -238,7 +241,7 @@
 
 	<div class="row " style="padding: 0.5em;margin: 0em;width: 100%;">
 
-		<div class="col-5"  style=" background: linear-gradient(to right, #293d3d 0%, #b3cccc 98%); overflow-y: scroll;height: 550px;">
+		<div class="col-5" id="anc_cont" style=" background: linear-gradient(to right, #293d3d 0%, #b3cccc 98%); overflow-y: scroll;height: 550px;">
 			<h2 style="text-align:center;color: #ccc;padding-bottom: 20px;padding-top: 20px;position:-webkit-sticky;" >Announcements</h2>
 			<div id="announce">
 				{% for ann in announce %}
@@ -253,44 +256,46 @@
 					   <a href="/retrieve_file?file_name={{ ann.file }}">file</a>
 				   {% endif %}
 
-				</h5>
+					</h5>
 		<p class="card-text">
 		   {% if occ=='teacher' %}
 				<button class="hiddenB" onclick="delAnn('{{ ann.ann_id }}')">Delete</button>
 				{% endif %}
 	   </p>
-	   </div>
-</div>
-	{%endfor%}
-</div>
+	   			</div>
+		</div>
+			{%endfor%}
+		</div>
 			</div>
 		<div class="col-7" style=" background: linear-gradient(to top, #f0f5f5 -1%, #c2d6d6 69%);padding-left: 20px;">
 				<div class="chat-header" style="border-radius: 10px;margin-top:5px" >
-					<h2 style="float: left;margin-left: 2%;">Class-{{ cls.cls_id }}</h2>
+					<h2 style="float: left;margin-left: 3%;">{{ cls.cls_id }}</h2>
 					{% if occ=='teacher' %}
-					<div id="list1" class="dropdown-check-list" tabindex="100" style="float: right;margin: 1%;z-index: 2;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				        <span class="anchor">Block chat <span id="num">[{{ num }}]</span> 
-				        	<span class="tooltip">Check to Block</span>
-				        </span>
-				        <ul class="dropdown-menu" style="text-align: center;height: 40%">
-				            <!-- <li><input type="checkbox" />Apple </li> -->
-				            <div style="text-align: left;overflow: scroll;height: 90%">
-				            <li style=" color:black;" class="dropdown-item"><input type="checkbox" onclick="toggleAll()">Toggle All</li>
-				            {% for stud in studs %}
-				            	<li style=" color:black;" class="dropdown-item"><input type="checkbox" name="user" value="{{ stud.user_id }}" 
-				            		{% if stud.allowed %}
-				            		   checked
-				            		{% endif %} >
-				            		{{ stud.name }},{{ stud.roll }}
-				            	</li>
-				            {% endfor %}
-				        </div>
-				        <div style="position: fixed;bottom: 0%;width: 100%;padding: 2%">
-				            <button class="btn btn-primary" onclick="checkPrivilage('{{ cls.cls_id }}')">submit</button>
-				        </div>
-				        </ul>
-					</div>
-				
+					
+				        <div class="dropdown" style="float:right;margin-top:2%;margin-right: 3%">
+						<a href="#" data-toggle="dropdown" class="dropdown-toggle" style="color:white;border: 1px solid white; padding: 1%"><span class="anchor"><b><font size="4px">Block chat</font></b> <span id="num">[{{ num }}]</span><b class="caret"></b></a>
+						<ul class="dropdown-menu" style="text-align: center;">
+						    <!-- <li><input type="checkbox" />Apple </li> -->
+						    <div style="text-align: left;overflow: scroll;height: 80%;">
+						    <div class="checkbox">
+						    <li style=" color:black;" class="dropdown-item"><input type="checkbox" onclick="toggleAll()">Toggle All</li>
+						    </div>
+						    {% for stud in studs %}
+						    <div class="checkbox">
+						    	<li style=" color:black;" class="dropdown-item"><input type="checkbox" name="user" value="{{ stud.user_id }}" 
+						    		{% if stud.allowed %}
+						    		   checked
+						    		{% endif %} >
+						    		{{ stud.name }},{{ stud.roll }}
+						    	</li>
+						    </div>
+						    {% endfor %}
+						    </div>
+						    <div style="position: fixed;bottom: 0%;width: 100%;padding: 2%">
+						    <button class="btn btn-primary" onclick="checkPrivilage('{{ cls.cls_id }}')" >submit</button>
+						    </div>
+						</ul>
+						</div>
 				    {% endif %}
 				</div>
 				<div id="post" style="height: 350px;padding-top: 10px; overflow-y: scroll;" onload="scroll()">
@@ -359,7 +364,7 @@
 					</div>
 					{% else %}
 					You are not allowed to send messages
-				{% endif %}
+					{% endif %}
 				
 				  </div>
 				  {% if occ=='teacher' %}
@@ -597,19 +602,31 @@
 	    	space=document.getElementById("ch_prvlge")
 	    	if (d[user_name]){
 
-	    		space.innerHTML="You are not allowed to message"
+	    		space.innerHTML=`<b style="left:50%">You are not allowed to message<b>`
 
 	    	}
 	    	else{
 
-	    		space.innerHTML=`<input type="text" class="form-control w-50%" name="post" placeholder="post" id="posting">
-				<button class="btn btn-primary pull-right"onclick="emitData()">Post</button>
-				<input type="file" id="file_post">`
+	    		space.innerHTML=`<input type="text" class="form-control" id="posting" placeholder="Text here...." aria-label="Recipient's username" aria-describedby="basic-addon2">
+					<div class="input-group-append">
+					  <button class="btn btn-secondary" type="button" style="height: 37px;"onclick="emitData()">Send</button>
+					  <!-- <input type="file" id="file_post" title=" "> -->
+					  <div class="image-upload">
+						<label for="file_post">
+							<img src="https://goo.gl/pB9rpQ" style="height: 37px;width: 50px;"/>
+						</label>
+					
+						<input id="file_post" type="file"/>
+					</div>
+					</div>`
 
 	    	}
     	}
 
     })
+    function res(){
+    	console.log(window.innerWidth)
+    }
 </script>
 </body>
 </html>

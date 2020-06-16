@@ -3,45 +3,10 @@
 <head>
 	<title>MY Classroom - Teacher</title>
 	<style type="text/css">
-		.classes{
-			border: 1px solid black; 
-			background: #d1d0cd;
-			width: 30%;
-			height: 100px;
-			margin-bottom: 3%;
-			margin-left: auto;
-			margin-right: auto;
-			text-align: center;
-		}
-		.input{
-			border-radius: 5px;
-			margin-bottom: 10px;
-			padding-bottom: 10px;
-		}
-		body {
-  		background-image: url('/static/img/bg6.webp');
-  		background-repeat: no-repeat;
-  		background-attachment: fixed;
-  		background-size: 100% 100%;
-}
-@media screen and (max-width: 950px){
-	.col-4{
-		display: none;
-	}
-	
-	.col-8{
-		margin-left: auto;
-		margin-right: auto;
 
-	}
-	.totalCount{
-		display: none;
-	}
-}
-	
 	</style>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+	<link rel="stylesheet" href="../static/css/view.css">
 	<!-- JS, Popper.js, and jQuery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -78,20 +43,17 @@
 		  </nav>
 
 
-<div class="container-fluid" style=" background: linear-gradient(to right, #293d3d 0%, #b3cccc 98%);">
-	
- <!-- <div id="teacher_name">
-	{{ teacher }}
- </div> -->
- <div class="row">
-<div class="col-4 " style="padding-top: 10px;">
-	<div class="position-fixed">
-	<div class="card" style="width: 18rem;">
-		<img class="card-img-top" src="/static/img/avatar.svg" style="width:200px;height:200px;margin-left: auto;margin-right: auto;">
-		<div class="card-body">
+<div class="container-fluid">
 
-		  <h5 class="card-title">{{ teacher }}</h5>
-		  <h6>{{ clg_name }}</h6>
+	<div class="row">
+		<div class="col-4 " style="padding-top: 10px;">
+			<div class="position-fixed">
+				<div class="card" style="width: 18rem;">
+					<img class="card-img-top" src="/static/img/avatar.svg" style="width:200px;height:200px;margin-left: auto;margin-right: auto;">
+					<div class="card-body">
+
+						<h5 class="card-title">{{ teacher }}</h5>
+						<h6>{{ clg_name }}</h6>
 
 		  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
 		</div>
@@ -128,7 +90,7 @@
 	  </div>
 	  </div>
 </div>
-<div class="col-8" style="height: 550px;padding-top: 10px; overflow-y: scroll;">
+<div class="col-8" style="height: 550px;padding-top: 10px;">
 	<div id="classes"  >
 	{% for class in classes %}
 	<!-- <div class='classes'>
@@ -151,6 +113,9 @@
 		  <a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="btn btn-primary">Go to Classes</a>
 		  <a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary">View Assignment</a>
 		  <button class="btn btn-primary" onclick='popUp("{{ class.cls_id }}")'>Add Assignment</button>
+		  <a target="_blank" href="/create_test?cls_id={{ class.cls_id }}" class="btn btn-primary">Create Test</a>
+   		  <a href="/view_test?cls_id={{ class.cls_id }}" class="btn btn-primary">View Test</a>
+
 		  <button class="btn btn-primary" style="background-color: red;border-color: red"onclick='deleteClass("{{ class.cls_id }}")' >Delete Class</button>
 		</div>
 		</div>
