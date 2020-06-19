@@ -93,7 +93,9 @@ class test:
 			ended=True if time_diff[0]!='-' else False
 			print(ended)
 			marks=m[0] if m else "NA"
+
 			t=i[4].split("T")[0]
+
 			t=t.split("-")
 			t=reversed(t)
 			t="-".join(t)

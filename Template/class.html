@@ -227,17 +227,18 @@
 					<div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="icon-card">
 							<i class="fas fa-2x fa-comments"></i>
-							<div class="icon-caption icon-options-caption text-primary">Chat</div>
+							<p class="icon-caption icon-options-caption text-primary">Chat</p>
 						</a>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/viewAss?cls_id={{ class.cls_id }}" class="icon-card">
-							<i class="fas fa-2x fa-book-open"></i>
-							<div class="icon-caption icon-options-caption text-primary">Assignments</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf">
+							<a href="/viewAss?cls_id={{ class.cls_id }}" class="icon-card">
+								<i class="fas fa-2x fa-book-open"></i>
+								<p class="icon-caption icon-options-caption text-primary">Assignments</p>
 						</a>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/view_test?cls_id={{ class.cls_id }}" class="icon-card">
 							<i class="fas fa-2x fa-clipboard"></i>
-							<div class="icon-caption icon-options-caption text-primary">Tests</div>
+							<p class="icon-caption icon-options-caption text-primary">Tests</p>
 						</a>
 						</div>
 					</div>

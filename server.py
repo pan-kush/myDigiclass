@@ -40,7 +40,7 @@ app.config['PERMANENT_SESSION_LIFETIME']=timedelta(minutes=150)
 socketio=SocketIO(app)
 
 #printdb
-for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements','test','urtest','clrtest']:
+for i in ['college','class','assignment','urc','ura','cra','chat','clrch','user','announcements','test','urtest', 'clrtest']:
 	c.execute("select * from "+i)
 	print(i.upper(),c.fetchall(),sep="::::  ",end="\n\n")
 
