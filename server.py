@@ -3,6 +3,7 @@ from flask_socketio import SocketIO,emit,join_room
 from werkzeug.utils import secure_filename
 import pandas as pd
 import os,time
+from markupsafe import escape
 
 from datetime import timedelta,datetime
 
@@ -485,6 +486,7 @@ def view_test():
 @app.route('/take_test',methods=["GET"])
 def take_test():
 
+	if not check_session(): return redirect(url_for('login'))
 
 	test_id=request.args.get("test_id")
 	cls_id=test_id.split("_")[1]
@@ -516,12 +518,50 @@ def grademe():
 
 @app.route('/marksheet',methods=["GET"])
 def marksheet():
+
+	if not check_session(): return redirect(url_for('login'))
+
 	test_id=request.args.get("test_id")
 	marks=test.getAllResults(c,test_id)
 	cls_id=test_id.split("_")[1]
 	details=test.getDetails(c,test_id)
 	return render_template("marksheet.html",marks=marks,d=details,occ=session['user']['occ'],cls_id=cls_id,test_id=test_id)
 
+@app.route('/profile/<string:user_id>')
+def profile(user_id):
+	if not check_session(): return redirect(url_for('login'))
+
+	user_id = escape(user_id)
+	# print(user_id)
+	data = user.getUserInfo(c,user_id)
+	edit = False
+	if session['user']['user_id']==user_id:
+		edit = True 
+	return render_template("profile.html",user=data,edit=edit)
+
+@app.route("/userDetails", methods=['POST'])
+def userDetails():
+	if not check_session(): return redirect(url_for('login'))
+
+	phone=request.form.get("phone")
+	pic=request.form.get("pic")
+	about=request.form.get("about")
+	social=request.form.get("social")
+	user_id=session['user']['user_id']
+	user.updateDetails(c,user_id,{'phone':phone,'pic':pic,'about':about,'social':social})
+	conn.commit()
+	return "Done"
+
+@app.route("/getImg")
+def getImg():
+	user_id=session['user']['user_id']
+	filename=user.getImgName(c,user_id)
+	print(filename)
+	if not filename:
+		p='.\\static\\img' if opsystem=="Windows" else "./static/img"
+		return send_file(p+filename,as_attachment=True,attachment_filename="avatar.svg")
+	print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+	return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename),as_attachment=True,attachment_filename=filename)
 
 
 # app.run(debug=True)
