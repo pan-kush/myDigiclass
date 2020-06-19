@@ -7,7 +7,6 @@
 	{% else %}
 		Student
 	{% endif %}</title>
-
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
 	<!-- JS, Popper.js, and jQuery -->
@@ -16,9 +15,9 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 	<!-- Font Awesome -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+	<script src="https://kit.fontawesome.com/3e7eccbab5.js" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="../static/css/view.css">
@@ -29,32 +28,62 @@
 </head>
 <body onload="onload()">
 
-	<div class="navbar-home">
-		<a class="navbar-brand" href="#" style="font-size:x-large;"><img src="../static/icons/logo.png" alt="" height="50px" > | &nbsp;
-			{% if occ=="teacher" %}
-				Teacher
-			{% else %}
-				Student
-			{% endif %}
+	<nav class="navbar-home navbar navbar-expand-lg">
+		<a class="navbar-brand" href="#" style="font-size:x-large;"><img src="../static/icons/logo.png" alt="" height="50px" >
 		</a>
-	</div>
-
-	<nav class="navbar navbar-dark side-menu">
+		<span class="position"> | &nbsp;
+			{% if occ=="teacher" %}
+			Teacher
+			{% else %}
+			Student
+			{% endif %}
+		</span>
 		
-		<div class="profile">
+		<div class="panel navbar-expand-md" id="navbarSupportedContent">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<i class="fas fa-home fa-2x home-icon"></i>
+					<p class="icon-caption">Home</p>
+				</li>
+				<li class="nav-item" style="position: relative;">
+					
+					<!-- if lengthOfNotif > 0 -->
+						<i class="fas fa-2x notify-count">3</i>
+
+					<i class="fas fa-2x fa-bell"></i>
+					<p class="icon-caption">Inbox</p>
+				</li>
+				<li class="nav-item" id="icon-profile">
+					<img id="avatar" src="getImg" alt="">
+					<p class="icon-caption">Profile</p>
+				</li>
+				<div class="dropdown-profile" onclick="toggleProfileMenu()">
+					<ul class="profile-options">
+						
+		<!-- <div class="profile">
 			<div class="icon">
 				<a href="/profile/{{ username }}"><img src="getImg" alt=""></a>
 			</div>
-		</div>
+		</div> -->
 
-		<ul>
-			<li><i class="fa fa-sign-out icon"></i></li>
-			<li>Menu2</li>
-			<li>Menu3</li>
-		</ul>
-		<div class="logout">
-			<a href="/logout"><i class="fa fa-sign-out icon-logout"><span class="menu-text">LogOut</span></i></a>
+						<li class="menu-item">
+							<i class="fas fa-user-circle dropdown-item-icon"></i>
+							<a href="/profile/{{ username }}">{{ name }}</a>
+						</li>
+						<li class="menu-item">
+							<i class="fas fa-user-cog dropdown-item-icon"></i>
+							<a href="#">Settings</a></li>
+						<li class="menu-item">
+							<i class="fas fa-sign-out-alt dropdown-item-icon"></i>
+							<a href="/logout">Logout</a></li>
+					</ul>
+				</div>
+				
+			</ul>
+			
+			
 		</div>
+		
 	</nav>
 
 		<!-- <nav class="navbar navbar-dark bg-dark navbar-static-top" style="font-size: large;">
@@ -191,18 +220,26 @@
 						</font>
 					</div>
 				<p class="card-text">{{ class.desc }}</p>
-				<a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="btn btn-primary btn-custom">Go to Classes</a>
+				<div class="options">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="icon-card"><i class="fas fa-3x fa-comments"></i></a>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/viewAss?cls_id={{ class.cls_id }}" class="icon-card"><i class="fas fa-3x fa-book-open"></i></a>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/view_test?cls_id={{ class.cls_id }}" class="icon-card"><i class="fas fa-3x fa-clipboard"></i></a>
+						</div>
+					</div>
+					
+				</div>
 
-				<a href="/viewAss?cls_id={{ class.cls_id }}" class="btn btn-primary btn-custom">View Assignment</a>
 
-				<a href="/view_test?cls_id={{ class.cls_id }}" class="btn btn-primary btn-custom">View Test</a>
-				
+<!-- 				
 				{% if occ!="teacher" %}
 				<button class="btn remove-btn btn-custom" onclick='removeClass("{{ class.cls_id }}")' >Remove Class</button>
 				{% else %}
 				
 				<button class="btn remove-btn btn-custom"onclick='deleteClass("{{ class.cls_id }}")' >Delete Class</button>
-				{% endif %}
+				{% endif %} -->
 
 				</div>
 			</div>
@@ -281,8 +318,15 @@
 	{% endif %}
 
 
-<script type="text/javascript">
+
+
+<script type="text/javascript"> 
 	
+
+
+
+
+
 	$(document).ready(function(){
 	  $('.dropdown-submenu a.test').on("click", function(e){
 	    $(this).next('ul').toggle();
@@ -415,5 +459,9 @@ function onload() {
 </script>
 </form>
 </div>
+
+
+<script src="../static/js/class.js"></script>
+
 </body>
 </html>

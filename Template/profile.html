@@ -65,7 +65,9 @@ Occupation: {{ user.occ }}
 		xhttp.onreadystatechange = function() {
 		      if (this.readyState == 4 && this.status == 200) {
 		            alert("Profile Updated");
-		            window.open(window.location.href,"_top");
+		            window.open("/Class","_top");
+		            // location.reload(true)
+		            // window.location.href=window.location.href;
 		      }
 		    }
 

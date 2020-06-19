@@ -1,4 +1,53 @@
 
+
+// IMPLEMENTING PROFILE MODAL
+
+
+// console.log(profileMenu.style);
+
+
+// let toggleProfileMenu = () => {
+// 	this.classList.toggle("active");
+// 	console.log('profile button clicked');
+// 	// if(profileMenu.style.display === 'none') {
+// 	// 	profileMenu.style.display = 'block';
+// 	// } else {
+// 	// 	profileMenu.style.display = 'none';
+// 	// }
+// }
+// console.log(document.getElementById('icon-profile'));
+let profileDiv = document.getElementById('icon-profile');
+let profileMenu = document.getElementsByClassName('dropdown-profile')[0];
+profileMenu.style.display = 'none';
+profileDiv.onclick = function () {
+	let showDiv = () => { return (profileMenu.style.display == "none")};
+	if(showDiv()) {
+		profileMenu.style.display = 'block'
+	} else {
+		profileMenu.style.display = 'none'
+	}
+}
+
+// function toggleProfileMenu() {
+// 	console.log('inside method');
+	
+// 	if(profileMenu.style.display === 'none') {
+// 		profileMenu.style.display = 'block';
+// 	} else {
+// 		profileMenu.style.display = 'none';
+// 	}
+// }
+
+
+
+// document.querySelector(".panel ul .dropdown-profile").addEventListener("click", 
+// function(){
+// 	this.classList.toggle("active");
+// });
+
+
+
+// Previous JS code
 username=window.location.href.split("&")[1].split("=")[1]
 console.log(username)
 cls_id=window.location.href.split("&")[0].split("=")[1]
@@ -107,3 +156,4 @@ h=obj.scrollHeight
 console.log(h);
   // obj.animate({scrollTop:h},1000)
 obj.scrollTop=h;
+

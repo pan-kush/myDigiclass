@@ -558,8 +558,9 @@ def getImg():
 	filename=user.getImgName(c,user_id)
 	print(filename)
 	if not filename:
-		p='.\\static\\img' if opsystem=="Windows" else "./static/img"
-		return send_file(p+filename,as_attachment=True,attachment_filename="avatar.svg")
+		p='.\\static' if opsystem=="Windows" else "./static"
+		p=os.path.join(os.path.join(p,'img'),"avatar.svg")
+		return send_file(p,as_attachment=True,attachment_filename="avatar.svg")
 	print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 	return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename),as_attachment=True,attachment_filename=filename)
 
