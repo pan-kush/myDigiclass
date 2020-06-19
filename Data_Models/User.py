@@ -1,12 +1,16 @@
 class user:
 	
-	def __init__(self,user_id="",clg_id="",name="",password="",occ="",roll=""):
+	def __init__(self,user_id="",clg_id="",name="",password="",occ="",roll="",about="",pic="",phone="",social=""):
 		self.user_id=user_id
 		self.clg_id=clg_id
 		self.name=name
 		self.password=password
 		self.occ=occ
 		self.roll=roll
+		self.about=about
+		self.pic=pic
+		self.phone=phone
+		self.social=social
 
 	def add(self,c):
 		
@@ -49,4 +53,22 @@ class user:
 			ls.append({'user_id':t[0],'name':t[1]})
 		return ls
 
+	@staticmethod
+	def getUserInfo(c,user_id):
+		c.execute("select * from user where user_id=?",(user_id,))
+		d=c.fetchone()
+		return {
+			'user_id':d[0],'clg_id':d[1],'name':d[2],'occ':d[4],
+			'roll':d[5],'about':d[6],'pic':d[7],'phone':d[8],'social':d[9]
+		}
 
+	@staticmethod
+	def updateDetails(c,user_id,data):
+		s=",".join(['{}="{}"'.format(i,data[i]) for i in data if data[i]])
+		print(s)
+		c.execute('update user set %s where user_id="%s"' %(s,user_id))
+
+	@staticmethod
+	def getImgName(c,user_id):
+		c.execute("select pic from user where user_id=?",(user_id,))
+		return c.fetchone()[0]
