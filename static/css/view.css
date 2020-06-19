@@ -108,7 +108,7 @@ body {
 #avatar{
   height: 40px;
   width: 40px;
-  /* border: 1px solid #677DB7; */
+  border: 1px solid #14213D;
   border-radius: 50%;
 }
 
@@ -207,7 +207,7 @@ body {
   padding : 1em;
   /* border: 1px solid black; */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
 /* Customizing card */
@@ -219,10 +219,46 @@ body {
   overflow: visible;
 }
 
-.icon-shelf {
-  text-align: center;
+.class_id {
+  font-size: 1rem;
+  color: #2196F3;
 }
 
+.class-name {
+  font-size: 2rem;
+  color: #000;
+}
+
+.icon-shelf {
+  text-align: center;
+  position: relative;
+  overflow: visible;
+}
+
+.icon-card {
+  text-decoration: none;
+  position: relative;
+  overflow:visible;
+}
+
+.icon-card:hover {
+  color: #14213D;
+  text-decoration: none;
+}
+
+.icon-options-caption {
+  position: absolute;
+  top: 1rem;
+  left: .5rem;
+  font-size: .7em;
+  /* display: none; */
+  z-index: 1010;
+}
+
+.icon-card:hover .icon-options-caption {
+  overflow:visible;
+  /* display: block; */
+}
 
 .btn-custom {
   margin: 3px;
@@ -294,8 +330,8 @@ body {
 
 .icon-create {
   position: absolute;
-  top: 0px;
-  right:0px;
+  top: 5px;
+  right:5px;
   /* box-shadow: 0px 9px 40px rgb(169, 174, 224); */
   border-radius: 50%;
   overflow-y: hidden;
@@ -303,8 +339,8 @@ body {
 
 
 .icon-create img {
-  height: 50px;
-  width: 50px;
+  height: 30px;
+  width: 30px;
   transition:ease;
   transition-duration: .5s;
 }
