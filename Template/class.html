@@ -210,23 +210,23 @@
 				<!-- Card layout -->
 				<div class="card-body">
 					<div class="card-title">
-						<font size="9px">
-							<a href="#">{{ class.cls_id }}</a>
-							<p class="totalCount">
+						<div>
+							<a class="class_id"href="#">{{ class.cls_id }}</a>
+							<!-- <p class="totalCount">
 								<font size="4px">Total Students : </font>
 								<span class="num">{{ class.participants }}</span>
-							</p>
+							</p> -->
 							<!-- <br> -->
-						</font>
+						</div>
 					</div>
-				<p class="card-text">{{ class.desc }}</p>
+				<p class="card-text class-name">{{ class.desc }}</p>
 				<div class="options">
 					<div class="row">
-						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="icon-card"><i class="fas fa-3x fa-comments"></i></a>
+						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="icon-card"><i class="fas  fa-comments"></i></a>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/viewAss?cls_id={{ class.cls_id }}" class="icon-card"><i class="fas fa-3x fa-book-open"></i></a>
+						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/viewAss?cls_id={{ class.cls_id }}" class="icon-card"><i class="fas  fa-book-open"></i></a>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/view_test?cls_id={{ class.cls_id }}" class="icon-card"><i class="fas fa-3x fa-clipboard"></i></a>
+						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/view_test?cls_id={{ class.cls_id }}" class="icon-card"><i class="fas fa-clipboard"></i></a>
 						</div>
 					</div>
 					

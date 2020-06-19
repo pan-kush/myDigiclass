@@ -57,9 +57,11 @@ class user:
 	def getUserInfo(c,user_id):
 		c.execute("select * from user where user_id=?",(user_id,))
 		d=c.fetchone()
+		print(d)
 		return {
 			'user_id':d[0],'clg_id':d[1],'name':d[2],'occ':d[4],
-			'roll':d[5],'about':d[6],'pic':d[7],'phone':d[8],'social':d[9]
+			# 'roll':d[5],'about':d[6],'pic':d[7],'phone':d[8],'social':d[9]
+			'roll':d[5], 'about':d[6]
 		}
 
 	@staticmethod
