@@ -39,19 +39,6 @@
 			{% endif %}
 		</span>
 		
-<<<<<<< HEAD
-<!-- 
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		  </button> -->
-=======
-		<div class="profile">
-			<div class="icon">
-				<a href="/profile/{{ username }}"><img src="getImg" alt=""></a>
-			</div>
-		</div>
->>>>>>> 989173742490f02c4b0c35deefc2a6d175ddfd4c
-
 		<div class="panel navbar-expand-md" id="navbarSupportedContent">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
@@ -67,14 +54,21 @@
 					<p class="icon-caption">Inbox</p>
 				</li>
 				<li class="nav-item" id="icon-profile">
-					<img id="avatar" src="../static/img/avatar.svg"alt="">
+					<img id="avatar" src="../static/img/avatar.svg" alt="">
 					<p class="icon-caption">Profile</p>
 				</li>
 				<div class="dropdown-profile" onclick="toggleProfileMenu()">
 					<ul class="profile-options">
+						
+		<!-- <div class="profile">
+			<div class="icon">
+				<a href="/profile/{{ username }}"><img src="getImg" alt=""></a>
+			</div>
+		</div> -->
+
 						<li class="menu-item">
 							<i class="fas fa-user-circle dropdown-item-icon"></i>
-							<a href="#">{{ name }}</a>
+							<a href="/profile/{{ username }}">{{ name }}</a>
 						</li>
 						<li class="menu-item">
 							<i class="fas fa-user-cog dropdown-item-icon"></i>
