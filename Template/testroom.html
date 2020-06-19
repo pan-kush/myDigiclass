@@ -46,7 +46,7 @@
 <div class="container" style="color:linen">
 	<h2 class=" pt-4 text-center">Test Name: {{ d.test_name }}</h2>
 	<!-- Description: {{ d.test_desc }} -->
-	<h2 class="text-right">Duration: {{ d.test_time }}mins</h2>
+	<h2 class="text-right">Date: {{ d.test_time.split("_")[0] }}  Duration: {{ d.test_dur }}mins</h2>
 	<h3 class="text-right"id="time" ></h3>
 	<button class="text-center btn btn-primary btn-start" onclick="start()" id="start">START</button>
 	<form action="/grademe" method="post">
@@ -74,9 +74,13 @@
 </div>
 
 <script type="text/javascript">
-	var min={{ d.test_time }}
+	var min=0
 	var sec=0
+	today=new Date()
+	console.log(today)
 	function timer(){
+		console.log(min)
+		console.log(sec)
 		document.getElementById("time").innerHTML=`${min}:${sec} remaining`
 		sec--;
 		if(sec==-1){
@@ -90,10 +94,33 @@
 		setTimeout(timer,1000);
 	}
 	function start(){
+
 		document.getElementById("sub").style.display="block"
 		document.getElementById("start").style.display="none"
 		document.getElementById("question").style.visibility="visible"
-		timer();
+
+		var xhttp= new XMLHttpRequest();
+	  	xhttp.onreadystatechange=function()
+	  	{
+
+	  		 if (this.readyState == 4 && this.status == 200) 
+	  		 {
+	  		 	console.log(this.responseText)
+				var k=this.responseText.split("_")
+				min=k[0]
+				sec=k[1]
+				timer()
+	  	  	 }
+		}
+		
+			// console.log(username)
+	    // xhttp.send("username="+e.value+"&password="+f.value)
+	     url="/duration"
+	     data= new FormData()
+	     data.append('test_id',"{{ d.test_id }}")
+	     xhttp.open("POST",url,true)
+	     xhttp.send(data)
+
 	}
 </script>
 </body>

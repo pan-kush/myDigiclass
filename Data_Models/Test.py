@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime,timedelta
 import os,platform
 import pandas as pd
 
@@ -72,8 +72,8 @@ class test:
 		return ls
 
 	@staticmethod
-	def addtoclrtest(c,cls_id="",test_id="",test_name="",test_desc="",test_time=""):
-		c.execute("insert into clrtest values (?,?,?,?,?)",(cls_id,test_id,test_name,test_desc,test_time))
+	def addtoclrtest(c,cls_id="",test_id="",test_name="",test_desc="",test_time="",test_dur=""):
+		c.execute("insert into clrtest values (?,?,?,?,?,?)",(cls_id,test_id,test_name,test_desc,test_time,test_dur))
 
 	@staticmethod
 	def getTests(c,cls_id,user_id):
@@ -85,8 +85,21 @@ class test:
 	
 			c.execute("select marks from urtest where user_id=? and test_id=?",(user_id,i[1]))
 			m=c.fetchone()
+			d_obj=datetime.strptime(i[4],'%Y-%m-%dT%H:%M')
+			d_obj1=d_obj+timedelta(minutes=int(i[5]))
+			time_diff=str(datetime.now()-d_obj1)
+			started=True if d_obj<=datetime.now() else False
+			print(i[2],time_diff)
+			ended=True if time_diff[0]!='-' else False
+			print(ended)
 			marks=m[0] if m else "NA"
-			l.append({'marks':marks,'test_id':i[1],'test_name':i[2],'test_desc':i[3],'test_time':i[4]})
+			t=i[4].split("T")[0]
+			t=t.split("-")
+			t=reversed(t)
+			t="-".join(t)
+			test_time=t+"_"+i[4].split("T")[1]
+			print(test_time)
+			l.append({'marks':marks,'test_id':i[1],'test_name':i[2],'test_desc':i[3],'test_time':test_time,'test_dur':i[5],'ended':ended,'started':started})
 		return l
 
 	@staticmethod
@@ -113,11 +126,23 @@ class test:
 
 		c.execute("select * from clrtest where test_id=?",(test_id,))
 		dl=c.fetchone()
-		return {'cls_id':dl[0],'test_id':dl[1],'test_name':dl[2],'test_desc':dl[3],'test_time':dl[4]}
+		t=dl[4].split("T")[0]
+		t=t.split("-")
+		t=reversed(t)
+		t="-".join(t)
+		test_time=t+"_"+dl[4].split("T")[1]
+		return {'cls_id':dl[0],'test_id':dl[1],'test_name':dl[2],'test_desc':dl[3],'test_time':test_time,'test_dur':dl[5],'test_t':dl[4]}
 
 	@staticmethod
 	def test_validation(c,user_id,test_id):
 
 		c.execute("select * from urtest where user_id=? and test_id=?",(user_id,test_id))
 		return True if c.fetchone() else False
+
+	@staticmethod
+	def remove(c,test_id):
+
+		c.execute("delete from test where test_id=?",(test_id,))
+		c.execute("delete from clrtest where test_id=?",(test_id,))
+		c.execute("delete from urtest where test_id=?",(test_id,))
 

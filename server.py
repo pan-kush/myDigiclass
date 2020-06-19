@@ -441,9 +441,11 @@ def set_paper():
 	test_name=ques_set['test_name']
 	test_desc=ques_set['test_desc']
 	test_time=ques_set['test_time']
+	test_dur=ques_set['test_dur']
 	del(ques_set['test_name'])
 	del(ques_set['test_desc'])
 	del(ques_set['test_time'])
+	del(ques_set['test_dur'])
 	cls_id=ques_set['cls_id']
 	del(ques_set['cls_id'])
 
@@ -459,7 +461,7 @@ def set_paper():
 	test_id=cls_id+"_"+str(time.time())
 	t=test(cls_id,test_id,qlist,opts,ans)
 	t.add(c)
-	t.addtoclrtest(c,cls_id,test_id,test_name,test_desc,test_time)
+	t.addtoclrtest(c,cls_id,test_id,test_name,test_desc,test_time,test_dur)
 	conn.commit()
 	return "ok"
 		
@@ -474,6 +476,7 @@ def view_test():
 	clg_id=session['user']['clg_id']
 	tests=test.getTests(c,clg_id+"_"+cls_id,user_id)
 	print(clg_id+'_'+cls_id)
+	print(tests)
 	teacher,desc=Class.getteacher_desc(c,clg_id+'_'+cls_id)
 	# u_name=session['user']['name']
 
@@ -490,12 +493,32 @@ def take_test():
 	cls_id=test_id.split("_")[1]
 	user_id=session['user']['user_id']
 	status=test.test_validation(c,user_id,test_id)
+
 	if status:
 		return redirect(url_for('Classs'))
 
 	ques,ques_count=test.getQuests(c,test_id)
 	details=test.getDetails(c,test_id)
 	return render_template("testroom.html",quests=ques,d=details,ques_count=ques_count)
+
+@app.route('/duration',methods=['POST'])
+def duration():
+
+	test_id=request.form.get('test_id')
+	print(test_id)
+	d=test.getDetails(c,test_id)
+	d_obj=datetime.strptime(d['test_t'],'%Y-%m-%dT%H:%M')
+	d_obj1=d_obj+timedelta(minutes=int(d['test_dur']))
+	time_diff=d_obj1-datetime.now()
+	# print(time_diff,time_diff.seconds)
+	# print(str(time_diff)[0])
+	if str(time_diff)[0]=='-':
+		return '0_1'
+	s=str(time_diff.seconds//60)+"_"+str(time_diff.seconds%60)
+	return s
+
+
+
 
 @app.route('/grademe',methods=["POST"])
 def grademe():
@@ -521,6 +544,16 @@ def marksheet():
 	cls_id=test_id.split("_")[1]
 	details=test.getDetails(c,test_id)
 	return render_template("marksheet.html",marks=marks,d=details,occ=session['user']['occ'],cls_id=cls_id,test_id=test_id)
+
+@app.route('/removeTest',methods=["POST"])
+def removeTest():
+
+	if not check_session(): return redirect(url_for('login'))
+	# cls_id=request.form.get("cls_id")
+	test_id=request.form.get("test_id")
+	test.remove(c,test_id)
+	conn.commit()
+	return redirect('/Class')
 
 
 
