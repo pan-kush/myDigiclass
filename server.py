@@ -532,7 +532,7 @@ def profile(user_id):
 	if not check_session(): return redirect(url_for('login'))
 
 	user_id = escape(user_id)
-	# print(user_id)
+	print(user_id)
 	data = user.getUserInfo(c,user_id)
 	edit = False
 	if session['user']['user_id']==user_id:
