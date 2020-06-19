@@ -550,7 +550,7 @@ def marksheet():
 	details=test.getDetails(c,test_id)
 	return render_template("marksheet.html",marks=marks,d=details,occ=session['user']['occ'],cls_id=cls_id,test_id=test_id)
 
-<<<<<<< HEAD
+
 @app.route('/profile/<string:user_id>')
 def profile(user_id):
 	if not check_session(): return redirect(url_for('login'))
@@ -587,7 +587,7 @@ def getImg():
 		return send_file(p,as_attachment=True,attachment_filename="avatar.svg")
 	print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 	return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename),as_attachment=True,attachment_filename=filename)
-=======
+
 @app.route('/removeTest',methods=["POST"])
 def removeTest():
 
@@ -598,7 +598,6 @@ def removeTest():
 	conn.commit()
 	return redirect('/Class')
 
->>>>>>> 086eec52d2bfb5868b2ba0ed2773166c7f1bb988
 
 
 # app.run(debug=True)
