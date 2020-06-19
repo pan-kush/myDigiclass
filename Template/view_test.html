@@ -115,7 +115,7 @@
 		{{ desc }}
 	</div> -->
 	<div class="card">
-		<h5 class="card-header">Duration : {{ test.test_time }} Minutes</h5>
+		<h5 class="card-header">Date: {{ test.test_time.split("_")[0] }}  Time: {{ test.test_time.split("_")[1] }}  Duration : {{ test.test_dur }} Minutes</h5>
 		<div class="card-body">
 		  <h5 class="card-title">
 			<font size="9px">
@@ -125,14 +125,20 @@
 		  </h5>
 		  <p class="card-text">{{ test.test_desc }}</p>
 		  {% if occ!='teacher' %}
-		   {% if test.marks=="NA"  %}
+		   {% if test.ended %}
+		    <button class="btn btn-primary disabled" style="background-color: #dedcdc;color: black;border-color: #dedcdc;">Ended {{ test.marks }}</button>
+		   {% elif test.marks=="NA"  %}
+		   		{% if test.started %}
                   <a class="btn btn-primary" href="/take_test?test_id={{ test.test_id }}">Take Test</a>
+                {% else %}
+		    	<button class="btn btn-primary disabled" style="background-color: #dedcdc;color: black;border-color: #dedcdc;">Not Started</button>
+		   		{% endif %}	
               {% else %}
                    <button class="btn btn-primary disabled" style="background-color: #dedcdc;color: black;border-color: #dedcdc;">Scored {{ test.marks }}</button>
 
               {% endif %}
 		  {% else %}
-		  <button class="btn btn-primary" style="background-color: red;border-color: red" onclick='removeAss()' >Delete Test</button>
+		  <button class="btn btn-primary" style="background-color: red;border-color: red" onclick='removeTest("{{ test.test_id }}")' >Delete Test</button>
 		  <a class="btn btn-primary" href="/marksheet?test_id={{ test.test_id }}">Marksheet</a>
 		  {% endif %}
 		  
@@ -175,60 +181,34 @@
 </div>
 <input type="submit" name=""> -->
 <script type="text/javascript" >
-	function removeAss(ass_id) {
- 		console.log(ass_id);
+	function removeTest(test_id) {
+ 		console.log(test_id);
  		// things to do 
  		data= new FormData()
-	    data.append('ass_id',ass_id)
+	    data.append('test_id',test_id)
 	    // data.append('ass_id',post_id)
 	    var xhttp = new XMLHttpRequest();
 
-	    if (!confirm("Do you want to delete this assignment"))
+	    if (!confirm("Do you want to delete this test"))
 	    	return ;
 
 	    xhttp.onreadystatechange = function() {
 	      if (this.readyState == 4 && this.status == 200) {
-	            alert("Assignment Delete");
+	            alert("Test Deleted");
 	            window.open(window.location.href,"_top");
 	      }
 	    };
-	     xhttp.open("POST","/removeAss",true)
+	     xhttp.open("POST","/removeTest",true)
 	    // xhttp.send("username="+e.value+"&password="+f.value)
 	    xhttp.send(data)
 
- 	}
+ 		}
 
-  ass_id=""
-  function popUp(a){
-  console.log(a)
-  // console.log(username)
-  // document.getElementById("blur").style.filter="blur(8px)"
-  document.getElementById('ass').value=a
-  pop_up=document.getElementById("ass_container").style
-  pop_up.display='block';
-  pop_up.backgroundColor="rgba(0,0,0,0.4)"
-  pop_up.zIndex=2
-  pop_up.filter="drop-shadow(8px 8px 10px gray)"
-}
-
-function submitAss(){
-	file=document.getElementById("file")
-	if(file.value=="")
-		return;
-		var xhttp= new XMLHttpRequest();
-		 data= new FormData()
-		 data.append('file',file.files[0])
-		 data.append('ass_id',ass_id)
-		 url="/submitAss"
-		 xhttp.open("POST",url,true)
-		 xhttp.send(data)
-  }
-
-function cancel() {
-  // body...
-  document.getElementById("ass_container").style.display='none'
-  ass_id=''
-}
+		function cancel() {
+		  // body...
+		  document.getElementById("ass_container").style.display='none'
+		  ass_id=''
+		}
 
 </script>
 </form>

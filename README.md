@@ -23,8 +23,10 @@
  	* (Marks For each ass)
  	* (MArks allot for each submission(Teacher))
 * Test:
-	* Date and Time(Start,duration)
+	### * Date and Time(Start,duration) -> Done
 	* Improve This Page
 	* Subjective Test(LAter)
 
 * Analytics Page(Dangerous)
+
+*convert time+date+"zone" all areas
