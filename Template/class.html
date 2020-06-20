@@ -29,7 +29,7 @@
 <body onload="onload()">
 
 	<nav class="navbar-home navbar navbar-expand-lg">
-		<a class="navbar-brand" href="#" style="font-size:x-large;"><img src="../static/icons/logo.png" alt="" height="50px" >
+		<a class="navbar-brand" href="#" style="font-size:x-large;"><img src="../static/icons/logo_blue.png" alt="" height="50px" >
 		</a>
 		<span class="position"> | &nbsp;
 			{% if occ=="teacher" %}
@@ -43,12 +43,12 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<i class="fas fa-home fa-2x home-icon"></i>
-					<p class="icon-caption">Home</p>
+					<a href="/Class" class="icon-caption">Home</a>
 				</li>
 				<li class="nav-item" style="position: relative;">
 					
 					<!-- if lengthOfNotif > 0 -->
-						<i class="fas fa-2x notify-count">3</i>
+						<i class="fas fa-2x notify-count animate-192406">3</i>
 
 					<i class="fas fa-2x fa-bell"></i>
 					<p class="icon-caption">Inbox</p>
@@ -85,7 +85,7 @@
 		</div>
 		
 	</nav>
-
+	<div class="pad" style="height: 2rem; width: 100%;"></div>
 		<!-- <nav class="navbar navbar-dark bg-dark navbar-static-top" style="font-size: large;">
 			<a class="navbar-brand" href="#" style="font-size:x-large;">My Classroom |
 				{% if occ=="teacher" %}
@@ -225,18 +225,18 @@
 				<br>
 				<div class="options">
 					<div class="row">
-						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="icon-card">
+						<div class="col-lg-3 col-md-3 col-sm-4 col-xs-3 icon-shelf"><a href="{{ url_for('chats',cls_id = class.cls_id) }}" class="icon-card">
 							<i class="fas fa-2x fa-comments"></i>
 							<p class="icon-caption icon-options-caption text-primary">Chat</p>
 						</a>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf">
+						<div class="col-lg-6 col-md-6 col-sm-4 col-xs-6 icon-shelf">
 							<a href="/viewAss?cls_id={{ class.cls_id }}" class="icon-card">
 								<i class="fas fa-2x fa-book-open"></i>
 								<p class="icon-caption icon-options-caption text-primary">Assignments</p>
 						</a>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-4 icon-shelf"><a href="/view_test?cls_id={{ class.cls_id }}" class="icon-card">
+						<div class="col-lg-3 col-md-3 col-sm-4 col-xs-3 icon-shelf"><a href="/view_test?cls_id={{ class.cls_id }}" class="icon-card">
 							<i class="fas fa-2x fa-clipboard"></i>
 							<p class="icon-caption icon-options-caption text-primary">Tests</p>
 						</a>

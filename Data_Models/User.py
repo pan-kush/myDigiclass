@@ -1,6 +1,6 @@
 class user:
 	
-	def __init__(self,user_id="",clg_id="",name="",password="",occ="",roll="",about="",pic="",phone="",social=""):
+	def __init__(self,user_id="",clg_id="",name="",password="",occ="",roll="",about="",pic="",phone="",social="", sex=""):
 		self.user_id=user_id
 		self.clg_id=clg_id
 		self.name=name
@@ -11,10 +11,10 @@ class user:
 		self.pic=pic
 		self.phone=phone
 		self.social=social
+		self.sex=sex
 
 	def add(self,c):
-		
-		c.execute("insert into user values (?,?,?,?,?,?)",(self.user_id,self.clg_id,self.name,self.password,self.occ.lower(),self.roll))
+		c.execute("insert into user values (?,?,?,?,?,?, ?)",(self.user_id,self.clg_id,self.name,self.password,self.occ.lower(),self.roll, self.sex))
 	
 	@staticmethod
 	def user_validation(c,user_id,password):
