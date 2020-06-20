@@ -550,6 +550,16 @@ def marksheet():
 	details=test.getDetails(c,test_id)
 	return render_template("marksheet.html",marks=marks,d=details,occ=session['user']['occ'],cls_id=cls_id,test_id=test_id)
 
+@app.route('/removeTest',methods=["POST"])
+def removeTest():
+
+	if not check_session(): return redirect(url_for('login'))
+	# cls_id=request.form.get("cls_id")
+	test_id=request.form.get("test_id")
+	test.remove(c,test_id)
+	conn.commit()
+	return redirect('/Class')
+
 
 @app.route('/profile/<string:user_id>')
 def profile(user_id):
@@ -588,15 +598,7 @@ def getImg():
 	print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 	return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename),as_attachment=True,attachment_filename=filename)
 
-@app.route('/removeTest',methods=["POST"])
-def removeTest():
 
-	if not check_session(): return redirect(url_for('login'))
-	# cls_id=request.form.get("cls_id")
-	test_id=request.form.get("test_id")
-	test.remove(c,test_id)
-	conn.commit()
-	return redirect('/Class')
 
 
 

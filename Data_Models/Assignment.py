@@ -50,7 +50,11 @@ class assignment:
 			time_diff=str(datetime.now().date()-d_obj.date())
 			ended=True if time_diff[0]!='-' else False
 
-			ls.append({'ass_id':i[0],'cls_id':i[1],'ass_name':i[2],'deadline':i[3],'desc':i[4],'submitted':s,'ended':ended})
+			t=i[3].split("-")
+			t=reversed(t)
+			t="-".join(t)
+
+			ls.append({'ass_id':i[0],'cls_id':i[1],'ass_name':i[2],'deadline':t,'desc':i[4],'submitted':s,'ended':ended})
 		print(ls)
 		return ls
 
@@ -60,7 +64,11 @@ class assignment:
 		c.execute("select * from assignment where ass_id=?",(ass_id,))
 		
 		d=c.fetchone()
-		return {'ass_id':d[0],'cls_id':d[1],'ass_name':d[2],'deadline':d[3],'desc':d[4]}
+
+		t=d[3].split("-")
+		t=reversed(t)
+		t="-".join(t)
+		return {'ass_id':d[0],'cls_id':d[1],'ass_name':d[2],'deadline':t,'desc':d[4]}
 
 	@staticmethod
 	def getSubmissions(c,ass_id,dload=True):
