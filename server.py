@@ -221,8 +221,9 @@ def viewAss():
 
 	teacher,desc=Class.getteacher_desc(c,clg_id+'_'+cls_id)
 
+
 	return render_template('assignments.html',cls_id=cls_id,assignments=assignmentsDict,
-							username=session['user']['user_id'],clg_id=clg_id,
+							username=session['user']['user_id'],clg_id=clg_id,ass=True,
 							teacher=teacher,occ=session['user']['occ'],name=session['user']['name'],
 							desc=desc)
 
@@ -481,7 +482,7 @@ def view_test():
 	teacher,desc=Class.getteacher_desc(c,clg_id+'_'+cls_id)
 	# u_name=session['user']['name']
 
-	return render_template("view_test.html",cls_id=cls_id,tests=tests,
+	return render_template("assignments.html",cls_id=cls_id,tests=tests,ass=False,
 							username=session['user']['user_id'],clg_id=clg_id,
 							teacher=teacher,occ=session['user']['occ'],name=session['user']['name'],
 							desc=desc)
