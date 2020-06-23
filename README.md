@@ -17,7 +17,7 @@
 	* NEarly Whatsapp
 	* Announcement -> Notification
 
-* Merge Assignment and Test page -> Done
+* ### Merge Assignment and Test page -> Done
 
 * Assignment(Submission.hmtl):
  	* (Marks For each ass)
